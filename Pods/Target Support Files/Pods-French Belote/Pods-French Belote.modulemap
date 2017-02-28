@@ -1,0 +1,6 @@
+framework module Pods_French_Belote {
+  umbrella header "Pods-French Belote-umbrella.h"
+
+  export *
+  module * { export * }
+}

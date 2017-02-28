@@ -7,21 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DAB5BF0B58DE005C387AC1E /* Pods_French_Belote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */; };
 		5209D1A21DF4C59C00042CCD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1A11DF4C59C00042CCD /* AppDelegate.swift */; };
-		5209D1A41DF4C59C00042CCD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1A31DF4C59C00042CCD /* ViewController.swift */; };
+		5209D1A41DF4C59C00042CCD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1A31DF4C59C00042CCD /* GameViewController.swift */; };
 		5209D1A71DF4C59C00042CCD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5209D1A51DF4C59C00042CCD /* Main.storyboard */; };
 		5209D1A91DF4C59C00042CCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5209D1A81DF4C59C00042CCD /* Assets.xcassets */; };
 		5209D1AC1DF4C59C00042CCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5209D1AA1DF4C59C00042CCD /* LaunchScreen.storyboard */; };
+		5209D1B41DF4C5B600042CCD /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B31DF4C5B600042CCD /* Card.swift */; };
+		5209D1B61DF4CD8900042CCD /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B51DF4CD8900042CCD /* Deck.swift */; };
+		5209D1B81DF4D52100042CCD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B71DF4D52100042CCD /* Player.swift */; };
+		5209D1BA1DF4EC6E00042CCD /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B91DF4EC6E00042CCD /* GameSession.swift */; };
+		5231C3671DF5D0A10049B42D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231C3661DF5D0A10049B42D /* LoginViewController.swift */; };
+		52BC01FB1DF7091B00223BD6 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BC01FA1DF7091B00223BD6 /* CardView.swift */; };
+		52BC01FF1DF8882E00223BD6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52BC01FE1DF8882E00223BD6 /* CloudKit.framework */; };
+		52D4A0291DFB87F200715F5D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D4A0281DFB87F200715F5D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A657197FEFB54781FB9F577 /* Pods-French Belote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-French Belote.release.xcconfig"; path = "Pods/Target Support Files/Pods-French Belote/Pods-French Belote.release.xcconfig"; sourceTree = "<group>"; };
+		34922E7344AB7B62D0183472 /* Pods-French Belote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-French Belote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-French Belote/Pods-French Belote.debug.xcconfig"; sourceTree = "<group>"; };
 		5209D19E1DF4C59C00042CCD /* French Belote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "French Belote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5209D1A11DF4C59C00042CCD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5209D1A31DF4C59C00042CCD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5209D1A31DF4C59C00042CCD /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		5209D1A61DF4C59C00042CCD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5209D1A81DF4C59C00042CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5209D1AB1DF4C59C00042CCD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5209D1AD1DF4C59C00042CCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5209D1B31DF4C5B600042CCD /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		5209D1B51DF4CD8900042CCD /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		5209D1B71DF4D52100042CCD /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		5209D1B91DF4EC6E00042CCD /* GameSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
+		5231C3661DF5D0A10049B42D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		52BC01FA1DF7091B00223BD6 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardView.swift; path = ../CardView.swift; sourceTree = "<group>"; };
+		52BC01FC1DF8880A00223BD6 /* French Belote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "French Belote.entitlements"; sourceTree = "<group>"; };
+		52BC01FE1DF8882E00223BD6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		52D4A0281DFB87F200715F5D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_French_Belote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52BC01FF1DF8882E00223BD6 /* CloudKit.framework in Frameworks */,
+				1DAB5BF0B58DE005C387AC1E /* Pods_French_Belote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +63,8 @@
 			children = (
 				5209D1A01DF4C59C00042CCD /* French Belote */,
 				5209D19F1DF4C59C00042CCD /* Products */,
+				52BC01FD1DF8882E00223BD6 /* Frameworks */,
+				6FDD14CFDE72DD5E87D7DD18 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +79,40 @@
 		5209D1A01DF4C59C00042CCD /* French Belote */ = {
 			isa = PBXGroup;
 			children = (
+				52BC01FC1DF8880A00223BD6 /* French Belote.entitlements */,
 				5209D1A11DF4C59C00042CCD /* AppDelegate.swift */,
-				5209D1A31DF4C59C00042CCD /* ViewController.swift */,
+				52BC01FA1DF7091B00223BD6 /* CardView.swift */,
+				5209D1A31DF4C59C00042CCD /* GameViewController.swift */,
+				5209D1B71DF4D52100042CCD /* Player.swift */,
+				5209D1B91DF4EC6E00042CCD /* GameSession.swift */,
+				5209D1B31DF4C5B600042CCD /* Card.swift */,
+				5209D1B51DF4CD8900042CCD /* Deck.swift */,
 				5209D1A51DF4C59C00042CCD /* Main.storyboard */,
+				5231C3661DF5D0A10049B42D /* LoginViewController.swift */,
 				5209D1A81DF4C59C00042CCD /* Assets.xcassets */,
 				5209D1AA1DF4C59C00042CCD /* LaunchScreen.storyboard */,
 				5209D1AD1DF4C59C00042CCD /* Info.plist */,
+				52D4A0281DFB87F200715F5D /* GoogleService-Info.plist */,
 			);
 			path = "French Belote";
+			sourceTree = "<group>";
+		};
+		52BC01FD1DF8882E00223BD6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				52BC01FE1DF8882E00223BD6 /* CloudKit.framework */,
+				7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6FDD14CFDE72DD5E87D7DD18 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				34922E7344AB7B62D0183472 /* Pods-French Belote.debug.xcconfig */,
+				0A657197FEFB54781FB9F577 /* Pods-French Belote.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +122,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5209D1B01DF4C59C00042CCD /* Build configuration list for PBXNativeTarget "French Belote" */;
 			buildPhases = (
+				0840595ACA44BA0461A5E505 /* [CP] Check Pods Manifest.lock */,
 				5209D19A1DF4C59C00042CCD /* Sources */,
 				5209D19B1DF4C59C00042CCD /* Frameworks */,
 				5209D19C1DF4C59C00042CCD /* Resources */,
+				5E95213524422CFE0F72D8EE /* [CP] Embed Pods Frameworks */,
+				74B3432DF50517DC4EB67264 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -96,7 +150,16 @@
 				TargetAttributes = {
 					5209D19D1DF4C59C00042CCD = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = B9452FEMTF;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -124,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5209D1AC1DF4C59C00042CCD /* LaunchScreen.storyboard in Resources */,
+				52D4A0291DFB87F200715F5D /* GoogleService-Info.plist in Resources */,
 				5209D1A91DF4C59C00042CCD /* Assets.xcassets in Resources */,
 				5209D1A71DF4C59C00042CCD /* Main.storyboard in Resources */,
 			);
@@ -131,12 +195,66 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0840595ACA44BA0461A5E505 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5E95213524422CFE0F72D8EE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-French Belote/Pods-French Belote-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		74B3432DF50517DC4EB67264 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-French Belote/Pods-French Belote-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5209D19A1DF4C59C00042CCD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5209D1A41DF4C59C00042CCD /* ViewController.swift in Sources */,
+				5231C3671DF5D0A10049B42D /* LoginViewController.swift in Sources */,
+				5209D1B61DF4CD8900042CCD /* Deck.swift in Sources */,
+				5209D1A41DF4C59C00042CCD /* GameViewController.swift in Sources */,
+				5209D1B41DF4C5B600042CCD /* Card.swift in Sources */,
+				5209D1B81DF4D52100042CCD /* Player.swift in Sources */,
+				5209D1BA1DF4EC6E00042CCD /* GameSession.swift in Sources */,
+				52BC01FB1DF7091B00223BD6 /* CardView.swift in Sources */,
 				5209D1A21DF4C59C00042CCD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,6 +299,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -230,6 +349,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -256,8 +376,11 @@
 		};
 		5209D1B11DF4C59C00042CCD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 34922E7344AB7B62D0183472 /* Pods-French Belote.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "French Belote/French Belote.entitlements";
+				DEVELOPMENT_TEAM = B9452FEMTF;
 				INFOPLIST_FILE = "French Belote/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail-auvergne.stefan.French-Belote";
@@ -268,8 +391,11 @@
 		};
 		5209D1B21DF4C59C00042CCD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A657197FEFB54781FB9F577 /* Pods-French Belote.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "French Belote/French Belote.entitlements";
+				DEVELOPMENT_TEAM = B9452FEMTF;
 				INFOPLIST_FILE = "French Belote/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail-auvergne.stefan.French-Belote";
@@ -297,6 +423,7 @@
 				5209D1B21DF4C59C00042CCD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
