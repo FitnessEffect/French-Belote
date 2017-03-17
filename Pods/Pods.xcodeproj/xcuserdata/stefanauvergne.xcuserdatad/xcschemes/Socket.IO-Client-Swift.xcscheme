@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A2404273AD2D75AC176D6EB20FDC5E19"
-               BuildableName = "Pods_French_Belote.framework"
-               BlueprintName = "Pods-French Belote"
+               BlueprintIdentifier = "0BF746FE8961F444E38D88155FADA5EB"
+               BuildableName = "SocketIO.framework"
+               BlueprintName = "Socket.IO-Client-Swift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A2404273AD2D75AC176D6EB20FDC5E19"
-            BuildableName = "Pods_French_Belote.framework"
-            BlueprintName = "Pods-French Belote"
+            BlueprintIdentifier = "0BF746FE8961F444E38D88155FADA5EB"
+            BuildableName = "SocketIO.framework"
+            BlueprintName = "Socket.IO-Client-Swift"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
