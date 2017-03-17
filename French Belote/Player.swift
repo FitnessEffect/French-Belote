@@ -13,6 +13,7 @@ class Player{
     var cardsInHand = [Card]()
     var playerNum = 0
     var playableCards = [Card]()
+    var uid:String!
     
     init(playerNum:Int){
         self.playerNum = playerNum

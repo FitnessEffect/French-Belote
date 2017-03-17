@@ -15,7 +15,6 @@ class Card{
     var suit:Suit
     var image:UIImage
     
-    
     init(rank:Rank, suit:Suit, image:UIImage){
         self.rank = rank
         self.suit = suit
@@ -37,7 +36,6 @@ class Card{
             case .ace: return "ace"
             }
         }
-        
         
         func cardsValueAtout()-> Int{
             switch self{
@@ -83,7 +81,6 @@ class Card{
         return deck
     }
 
-    
     func generateDeck() -> [Card]{
         var deck: Array = [Card]()
         let maxRank = Card.Rank.ace

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SocketIO
+import FirebaseAuth
 
 class GameViewController: UIViewController {
     
@@ -51,9 +53,24 @@ class GameViewController: UIViewController {
     var tapCount = 0
     var selectedCardView:UIImageView!
     var shuffledDeck = [Card]()
+    var socket:SocketIOClient!
+    var uid:String!
+    var seat1:Seat!
+    var seat2:Seat!
+    var seat3:Seat!
+    var seat4:Seat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        uid = FIRAuth.auth()?.currentUser?.uid
+        openSocket()
+        //pingServer()
+        
+        seat1 = Seat()
+        seat1.player = Player(playerNum: 1)
+        seat1.player.uid = uid
+        
         newGameBtn.isHidden = true
         
         cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
@@ -115,9 +132,9 @@ class GameViewController: UIViewController {
                 card7.image = game.player1.cardsInHand[6].image
                 card8.image = game.player1.cardsInHand[7].image
             return
-            
         }
         
+        socket.emit("setAtout", ["atout":game.atoutSelected])
         selectAtout.isHidden = true
         heartBtnOutlet.isHidden = true
         diamondBtnOutlet.isHidden = true
@@ -127,59 +144,62 @@ class GameViewController: UIViewController {
         
     }
     
+    func openSocket(){
+        socket = SocketIOClient(socketURL: URL(string: "http://localhost:3000")!, config: [.log(true), .forcePolling(true)])
+        socket.on("connect") {data, ack in
+            print("socket connected")
+            self.socket.emit("addNewPlayer", ["id":self.uid])
+            self.socket.emit("addNewPlayer", ["id":2])
+            self.socket.emit("addNewPlayer", ["id":3])
+            self.socket.emit("addNewPlayer", ["id":4])
+            
+            
+        }
+        
+        socket.on("playerJoined") {data, ack in
+            print(data)
+            // create another Player(), assign the Player.id = data
+            // var playersArray: [Player]
+            // grab indices: playersArray.index(of: Player)
+            // alternatively, have a Seat() class, Seat.player = Player()
+        }
+        
+        socket.on("updatePoints"){data, ack in
+            print("Winner player is: \(data)")
+            
+            if let dictionary = data[0] as? [String:Any]{
+                print(dictionary["id"]!)
+            }
+        }
+        socket.connect()
+    }
+    
+    
     func pingServer(){
-        let urlRequest = NSMutableURLRequest(url: URL(string:"http://138.197.16.105:3000/ping")!)
+        var urlRequest = URLRequest(url: URL(string:"http://138.197.16.105:3000/start")!)
         
         //setting the method to post
         urlRequest.httpMethod = "POST"
         
-        //creating the post parameter by concatenating the keys and values from text field
-        //create url
-        let postParameters = ""
-       
-        //adding the parameters to request body
-        //urlRequest.httpBody = postParameters.data(using: String.Encoding.utf8)
-        
-        let task = URLSession.shared.dataTask(with: urlRequest as URLRequest){
-            (data, response, error) in
-            
-//                guard let data = data, error == nil else {                                                 // check for fundamental networking error
-//                    print("error=\(error)")
-//                    return
-//                }
-//                
-//                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-//                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-//                    print("response = \(response)")
-//                }
-//                
-//                let responseString = String(data: data, encoding: .utf8)
-//                print("responseString = \(responseString)")
-//            }
-//            task.resume()
-//        }
-//
-            do {
-                
-                //  let jsonData = NSData(contentsOfFile: jsonFile!)
-                // let jsonData = NSData(contentsOf: url! as URL)
-                
-                //converting response to NSDictionary
-                let myJSON = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject
-                
-                print(myJSON)
-               
-                for eachElement in 0...myJSON.count-1{
-                    
-                    if let jsonObject = myJSON[eachElement] as? NSDictionary{
-                        
-                    }
-                }
-            } catch {
-                print(error)
+        //url params
+        let postString = "name=Test"
+        //create as data element
+        urlRequest.httpBody = postString.data(using: .utf8)
+        //task that sends request
+        let task = URLSession.shared.dataTask(with: urlRequest){
+            data,response,error in
+            //checking for errors
+            guard let data = data, error == nil else{
+                print(error!)
+                return
             }
-            print(String(describing: response))
-            print(String(describing: data!))
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200{
+                print(httpStatus.statusCode)
+                print(response!)
+                return
+            }
+            let responseString = String(data:data, encoding:.utf8)
+            print(responseString!)
         }
         //executing the task
         task.resume()
@@ -189,6 +209,7 @@ class GameViewController: UIViewController {
 //            
 //        })
     }
+
     
     func cardInteraction(){
       tagNum = 0
@@ -214,7 +235,8 @@ class GameViewController: UIViewController {
     }
     
     func cardImageTapped(sender:UITapGestureRecognizer){
-       // pingServer()
+         
+        // pingServer()
         tapCount += 1
         
         print(tapCount)
@@ -236,6 +258,11 @@ class GameViewController: UIViewController {
                 let tag = sender.view!.tag
                 
                 game.playCard(card: game.player1.cardsInHand[tag])
+               
+                //send player 1 card value
+                socket.emit("cardPlayed", ["id":uid,"rank":game.player1.cardsInHand[tag].rank.rawValue, "suit":game.player1.cardsInHand[tag].suit.rawValue])
+                
+                
                 
                 cardImageArray[tag].isHidden = true
                 selectedCardView.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -282,7 +309,6 @@ class GameViewController: UIViewController {
         
         cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
         
-        
         deck = cardObj.generateDeck()
         
         let shuffledDeck = deckObj.shuffleDeck(deck: deck)
@@ -308,19 +334,33 @@ class GameViewController: UIViewController {
         
         cardInteraction()
     }
+    
+    func displayPlayedCard(playerID:String, rank:Int, suit:String){
+        
+    }
 
     func displayPlayedCards(){
         //Played Cards from other players
-        
         game.playCard(card:game.player2.playableCards.first!)
+        //send player 2 card value
+        socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue])
+
         print(game.playedCards[1].rank, game.playedCards[1].suit.rawValue)
         game.checkNextCard(card: game.playedCards.first!, player: game.player2)
         
         game.playCard(card:game.player3.playableCards.first!)
+        //send player 3 card value
+        socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue])
+        
+        
         print(game.playedCards[2].rank, game.playedCards[2].suit.rawValue)
         game.checkNextCard(card: game.playedCards.first!, player: game.player3)
         
         game.playCard(card:game.player4.playableCards.first!)
+        //send player 4 card value
+        socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue])
+        
+        socket.emit("compareCards")
         print(game.playedCards[3].rank, game.playedCards[3].suit.rawValue)
         
         //remove card from hand
@@ -329,7 +369,8 @@ class GameViewController: UIViewController {
         deck = game.player4.removeCardFromHand(player:game.player4, passedCard:game.player4.playableCards.first!, deck: deck)
         
         let cards = game.getPlayedCards
-        
+        // if seat1.player.id == id <--- arg
+        // seat1.image = ...
         playedCard1.image = cards()[0].image
         playedCard2.image = cards()[1].image
         playedCard3.image = cards()[2].image
