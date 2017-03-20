@@ -41,7 +41,7 @@ class GameViewController: UIViewController {
     
     
     let game = GameSession()
-    let player = Player(playerNum: 0)
+    let player1 = Player(playerNum: 1)
     let deckObj = Deck()
     var tempPlayableCards = [Card]()
     var cardImageArray:[UIImageView]!
@@ -59,17 +59,21 @@ class GameViewController: UIViewController {
     var seat2:Seat!
     var seat3:Seat!
     var seat4:Seat!
+    var dictionaryScore = [String:Any]()
+    var totalPlayers = [Player]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         uid = FIRAuth.auth()?.currentUser?.uid
-        openSocket()
-        //pingServer()
+        //openSocket()
+        pingServer()
         
         seat1 = Seat()
         seat1.player = Player(playerNum: 1)
         seat1.player.uid = uid
+        
+        totalPlayers.append(player1)
         
         newGameBtn.isHidden = true
         
@@ -141,42 +145,67 @@ class GameViewController: UIViewController {
         clubBtnOutlet.isHidden = true
         spadeBtnOutlet.isHidden = true
         pass.isHidden = true
-        
     }
     
     func openSocket(){
-        socket = SocketIOClient(socketURL: URL(string: "http://localhost:3000")!, config: [.log(true), .forcePolling(true)])
+        socket = SocketIOClient(socketURL: URL(string: "http://159.203.87.174:5858")!, config: [.log(true), .forcePolling(true)])
         socket.on("connect") {data, ack in
             print("socket connected")
             self.socket.emit("addNewPlayer", ["id":self.uid])
+            //check if seat is occupied by a player
             self.socket.emit("addNewPlayer", ["id":2])
             self.socket.emit("addNewPlayer", ["id":3])
             self.socket.emit("addNewPlayer", ["id":4])
-            
-            
         }
         
         socket.on("playerJoined") {data, ack in
             print(data)
             // create another Player(), assign the Player.id = data
+            if self.totalPlayers.count == 1{
+                let player2 = Player(playerNum: self.totalPlayers.count + 1)
+                player2.uid = data[0] as! String
+                self.seat2.player = player2
+            }
+            if self.totalPlayers.count == 2{
+                let player3 = Player(playerNum: self.totalPlayers.count + 1)
+                player3.uid = data[0] as! String
+                self.seat3.player = player3
+            }
+            if self.totalPlayers.count == 3{
+                let player4 = Player(playerNum: self.totalPlayers.count + 1)
+                player4.uid = data[0] as! String
+                self.seat4.player = player4
+            }
+            
             // var playersArray: [Player]
             // grab indices: playersArray.index(of: Player)
             // alternatively, have a Seat() class, Seat.player = Player()
         }
         
-        socket.on("updatePoints"){data, ack in
+        socket.on("atoutSelected") {data, ack in
+            self.game.atoutSelected = data[0] as! String
+        }
+        
+        socket.on("updateScore"){data, ack in
             print("Winner player is: \(data)")
+            let score = data[0] as? String
+            let tempArray = score?.components(separatedBy: " ")
+            self.dictionaryScore["team1"] = tempArray![3] as String
+            self.dictionaryScore["team2"] = tempArray![7] as String
+//            if let dictionary = data[0] as? [String:Any]{
+//                print(dictionary["id"]!)
+//            }
+            print(self.dictionaryScore["team1"]!)
+            self.team1Score.text = "Team 1: " + String(describing: self.dictionaryScore["team1"]!)
+            self.team2Score.text = "Team 2: " + String(describing: self.dictionaryScore["team2"]!)
             
-            if let dictionary = data[0] as? [String:Any]{
-                print(dictionary["id"]!)
-            }
         }
         socket.connect()
     }
     
     
     func pingServer(){
-        var urlRequest = URLRequest(url: URL(string:"http://138.197.16.105:3000/start")!)
+        var urlRequest = URLRequest(url: URL(string:"http://159.203.87.174:5858")!)
         
         //setting the method to post
         urlRequest.httpMethod = "POST"
@@ -235,8 +264,7 @@ class GameViewController: UIViewController {
     }
     
     func cardImageTapped(sender:UITapGestureRecognizer){
-         
-        // pingServer()
+        
         tapCount += 1
         
         print(tapCount)
@@ -260,9 +288,13 @@ class GameViewController: UIViewController {
                 game.playCard(card: game.player1.cardsInHand[tag])
                
                 //send player 1 card value
-                socket.emit("cardPlayed", ["id":uid,"rank":game.player1.cardsInHand[tag].rank.rawValue, "suit":game.player1.cardsInHand[tag].suit.rawValue])
+                if game.player1.cardsInHand[tag].suit.rawValue == game.atoutSelected{
+                    socket.emit("cardPlayed", ["id":uid,"rank":game.player1.cardsInHand[tag].rank.rawValue, "suit":game.player1.cardsInHand[tag].suit.rawValue, "value":game.player1.cardsInHand[tag].rank.cardsValueAtout()])
+                }else{
+                     socket.emit("cardPlayed", ["id":uid,"rank":game.player1.cardsInHand[tag].rank.rawValue, "suit":game.player1.cardsInHand[tag].suit.rawValue, "value":game.player1.cardsInHand[tag].rank.cardsValueNonAtout()])
+                }
                 
-                
+        
                 
                 cardImageArray[tag].isHidden = true
                 selectedCardView.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -277,12 +309,12 @@ class GameViewController: UIViewController {
                 
                 let winner = game.comparePlayedCards()
                 winnerLabel.text = "Player " + String(winner.playerNum) + " wins!"
-                let tempScore = game.calculateScore()
-                if winner.playerNum == game.player1.playerNum || winner.playerNum == game.player3.playerNum{
-                    team1Score.text = "Team 1: " + String(tempScore)
-                }else if winner.playerNum == game.player2.playerNum || winner.playerNum == game.player4.playerNum{
-                    team2Score.text = "Team 2: " + String(tempScore)
-                }
+//                let tempScore = game.calculateScore()
+//                if winner.playerNum == game.player1.playerNum || winner.playerNum == game.player3.playerNum{
+//                    team1Score.text = "Team 1: " + String(tempScore)
+//                }else if winner.playerNum == game.player2.playerNum || winner.playerNum == game.player4.playerNum{
+//                    team2Score.text = "Team 2: " + String(tempScore)
+//                }
                 
                 tapCount = 0
                 }else{
@@ -331,7 +363,6 @@ class GameViewController: UIViewController {
         card7.image = UIImage(named: "back")
         card8.image = UIImage(named: "back")
 
-        
         cardInteraction()
     }
     
@@ -343,23 +374,36 @@ class GameViewController: UIViewController {
         //Played Cards from other players
         game.playCard(card:game.player2.playableCards.first!)
         //send player 2 card value
-        socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue])
+        //socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue])
+        if game.player2.playableCards.first!.suit.rawValue == game.atoutSelected{
+            socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue, "value":game.player2.playableCards.first!.rank.cardsValueAtout()])
+        }else{
+             socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue, "value":game.player2.playableCards.first!.rank.cardsValueNonAtout()])
+        }
 
         print(game.playedCards[1].rank, game.playedCards[1].suit.rawValue)
         game.checkNextCard(card: game.playedCards.first!, player: game.player2)
         
         game.playCard(card:game.player3.playableCards.first!)
         //send player 3 card value
-        socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue])
-        
+        //socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue])
+        if game.player3.playableCards.first!.suit.rawValue == game.atoutSelected{
+            socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue, "value":game.player3.playableCards.first!.rank.cardsValueAtout()])
+        }else{
+            socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue, "value":game.player3.playableCards.first!.rank.cardsValueNonAtout()])
+        }
         
         print(game.playedCards[2].rank, game.playedCards[2].suit.rawValue)
         game.checkNextCard(card: game.playedCards.first!, player: game.player3)
         
         game.playCard(card:game.player4.playableCards.first!)
         //send player 4 card value
-        socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue])
-        
+        //socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue])
+        if game.player4.playableCards.first!.suit.rawValue == game.atoutSelected{
+            socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue, "value":game.player4.playableCards.first!.rank.cardsValueAtout()])
+        }else{
+            socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue, "suit":game.player4.playableCards.first!.suit.rawValue, "value":game.player4.playableCards.first!.rank.cardsValueNonAtout()])
+        }
         socket.emit("compareCards")
         print(game.playedCards[3].rank, game.playedCards[3].suit.rawValue)
         
