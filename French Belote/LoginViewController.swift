@@ -17,7 +17,12 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FIRAuth.auth()?.addStateDidChangeListener({auth, user in
+            //check if remember me is true
+            if user != nil{
+                  self.performSegue(withIdentifier: "segueGame", sender: self)
+            }
+        })
         // Do any additional setup after loading the view.
     }
 
@@ -27,17 +32,8 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: UIButton) {
-        FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!) { (user, error) in
-          
-            if error == nil{
-                print("worked")
-                self.performSegue(withIdentifier: "segueGame", sender: self)
-            }else{
-                print("error")
-
-            }
-            
-        }
+        FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:nil)
+        
     }
     
     @IBAction func register(_ sender: UIButton) {
