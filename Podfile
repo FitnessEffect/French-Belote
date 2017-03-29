@@ -10,6 +10,7 @@ target 'French Belote' do
   pod 'Firebase/Core'
   pod ‘Firebase’
   pod ‘Firebase/Auth’
+  pod 'Firebase/Database'
   pod 'Socket.IO-Client-Swift', '~> 8.2.0' # Or latest version
 
 end
