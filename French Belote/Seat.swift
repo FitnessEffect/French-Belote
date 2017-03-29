@@ -11,6 +11,7 @@ import UIKit
 class Seat: UIImageView {
 
     var player:Player!
+    var seatImage:UIImageView!
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

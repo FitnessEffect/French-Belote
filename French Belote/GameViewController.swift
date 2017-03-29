@@ -14,6 +14,8 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var selectAtout: UILabel!
     @IBOutlet weak var winnerLabel: UILabel!
+    @IBOutlet weak var player2NameLabel: UILabel!
+    @IBOutlet weak var atoutLabel: UILabel!
     
     @IBOutlet weak var card1: UIImageView!
     @IBOutlet weak var card2: UIImageView!
@@ -26,6 +28,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var team1Score: UILabel!
     @IBOutlet weak var team2Score: UILabel!
+    @IBOutlet weak var waitingLabel: UILabel!
     
     @IBOutlet weak var heartBtnOutlet: UIButton!
     @IBOutlet weak var diamondBtnOutlet: UIButton!
@@ -41,7 +44,7 @@ class GameViewController: UIViewController {
     
     
     let game = GameSession()
-    let player = Player(playerNum: 0)
+    let player1 = Player(playerNum: 1)
     let deckObj = Deck()
     var tempPlayableCards = [Card]()
     var cardImageArray:[UIImageView]!
@@ -59,6 +62,8 @@ class GameViewController: UIViewController {
     var seat2:Seat!
     var seat3:Seat!
     var seat4:Seat!
+    var dictionaryScore = [String:Any]()
+    var totalSeatPlayers = [Seat]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,30 +75,40 @@ class GameViewController: UIViewController {
         seat1 = Seat()
         seat1.player = Player(playerNum: 1)
         seat1.player.uid = uid
+        seat1.seatImage = playedCard1
         
+        totalSeatPlayers.append(seat1)
+        
+       
         newGameBtn.isHidden = true
         
         cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
+
+        //cardObj = Card(rank: Card.Rank.seven, suit: Card.Suit.club, image: cardImage)
+        //deck = cardObj.generateDeck()
         
-        cardObj = Card(rank: Card.Rank.seven, suit: Card.Suit.club, image: cardImage)
-        deck = cardObj.generateDeck()
+        //shuffledDeck = deckObj.shuffleDeck(deck: deck)
         
-        shuffledDeck = deckObj.shuffleDeck(deck: deck)
+        //deckObj.dealCards(player1: game.player1, player2: game.player2, player3: game.player3, player4: game.player4, deck: shuffledDeck)
         
-        deckObj.dealCards(player1: game.player1, player2: game.player2, player3: game.player3, player4: game.player4, deck: shuffledDeck)
-        
-        card1.image = game.player1.cardsInHand[0].image
-        card2.image = game.player1.cardsInHand[1].image
-        card3.image = game.player1.cardsInHand[2].image
-        card4.image = game.player1.cardsInHand[3].image
-        card5.image = game.player1.cardsInHand[4].image
-        card6.image = UIImage(named: "back")
-        card7.image = UIImage(named: "back")
-        card8.image = UIImage(named: "back")
+        //card1.image = game.player1.cardsInHand[0].image
+        //card2.image = game.player1.cardsInHand[1].image
+        //card3.image = game.player1.cardsInHand[2].image
+        //card4.image = game.player1.cardsInHand[3].image
+        //card5.image = game.player1.cardsInHand[4].image
+        //card6.image = UIImage(named: "back")
+        //card7.image = UIImage(named: "back")
+        //card8.image = UIImage(named: "back")
         
         cardInteraction()
+        
+        selectAtout.isHidden = true
+        heartBtnOutlet.isHidden = true
+        diamondBtnOutlet.isHidden = true
+        clubBtnOutlet.isHidden = true
+        spadeBtnOutlet.isHidden = true
+        pass.isHidden = true
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -103,34 +118,39 @@ class GameViewController: UIViewController {
     @IBAction func selectAtoutBtns(_ sender: UIButton) {
         if sender.titleLabel?.text == "Heart"{
             game.setAtout(atout: "heart")
-         //   deckObj.dealRemaining(player1: game.player1, deck: shuffledDeck)
-            card6.image = game.player1.cardsInHand[5].image
-            card7.image = game.player1.cardsInHand[6].image
-            card8.image = game.player1.cardsInHand[7].image
+            //card6.image = game.player1.cardsInHand[5].image
+            //card7.image = game.player1.cardsInHand[6].image
+            //card8.image = game.player1.cardsInHand[7].image
         }else if sender.titleLabel?.text == "Diamond"{
             game.setAtout(atout: "diamond")
          //   deckObj.dealRemaining(player1: game.player1, deck: shuffledDeck)
-            card6.image = game.player1.cardsInHand[5].image
-            card7.image = game.player1.cardsInHand[6].image
-            card8.image = game.player1.cardsInHand[7].image
+            //card6.image = game.player1.cardsInHand[5].image
+            //card7.image = game.player1.cardsInHand[6].image
+            //card8.image = game.player1.cardsInHand[7].image
         }else if sender.titleLabel?.text == "Club"{
             game.setAtout(atout: "club")
           //  deckObj.dealRemaining(player1: game.player1, deck: shuffledDeck)
-            card6.image = game.player1.cardsInHand[5].image
-            card7.image = game.player1.cardsInHand[6].image
-            card8.image = game.player1.cardsInHand[7].image
+            //card6.image = game.player1.cardsInHand[5].image
+            //card7.image = game.player1.cardsInHand[6].image
+            //card8.image = game.player1.cardsInHand[7].image
         }else if sender.titleLabel?.text == "Spade"{
             game.setAtout(atout: "spade")
           //  deckObj.dealRemaining(player1: game.player1, deck: shuffledDeck)
-            card6.image = game.player1.cardsInHand[5].image
-            card7.image = game.player1.cardsInHand[6].image
-            card8.image = game.player1.cardsInHand[7].image
+            //card6.image = game.player1.cardsInHand[5].image
+            //card7.image = game.player1.cardsInHand[6].image
+            //card8.image = game.player1.cardsInHand[7].image
         }else if sender.titleLabel?.text == "Pass"{
            // deckObj.dealRemaining(player1: game.player1, deck: shuffledDeck)
+                //card6.image = game.player1.cardsInHand[5].image
+                //card7.image = game.player1.cardsInHand[6].image
+                //card8.image = game.player1.cardsInHand[7].image
+            socket.emit("setAtout", ["atout":"pass", "uid":seat1.player.uid])
+            selectAtout.isHidden = true
+            heartBtnOutlet.isHidden = true
+            diamondBtnOutlet.isHidden = true
+            clubBtnOutlet.isHidden = true
+            spadeBtnOutlet.isHidden = true
             pass.isHidden = true
-                card6.image = game.player1.cardsInHand[5].image
-                card7.image = game.player1.cardsInHand[6].image
-                card8.image = game.player1.cardsInHand[7].image
             return
         }
         
@@ -141,42 +161,430 @@ class GameViewController: UIViewController {
         clubBtnOutlet.isHidden = true
         spadeBtnOutlet.isHidden = true
         pass.isHidden = true
-        
     }
     
     func openSocket(){
-        socket = SocketIOClient(socketURL: URL(string: "http://localhost:3000")!, config: [.log(true), .forcePolling(true)])
+        socket = SocketIOClient(socketURL: URL(string: "http://192.168.0.4:3000")!, config: [.log(true), .forcePolling(true)])
         socket.on("connect") {data, ack in
-            print("socket connected")
             self.socket.emit("addNewPlayer", ["id":self.uid])
-            self.socket.emit("addNewPlayer", ["id":2])
-            self.socket.emit("addNewPlayer", ["id":3])
-            self.socket.emit("addNewPlayer", ["id":4])
-            
-            
+            self.socket.emit("updatePlayers")
+            //check if seat is occupied by a player
+
+        }
+        
+        socket.on("cardPlayed") {data, ack in
+            // king of hearts played
+            // by player with uid asdfa;sldkfj
+            // player is at seat 3
+            // seat 3 card animation, go
+        }
+        socket.on("updatePlayers"){data, ack in
+            print(data)
+            //find out number of players
         }
         
         socket.on("playerJoined") {data, ack in
-            print(data)
-            // create another Player(), assign the Player.id = data
+            let dictionary = data[0] as! [String:Any]
+            let id = dictionary["id"] as! String
+            for seat in self.totalSeatPlayers{
+                
+                if seat.player.uid == id{
+                    //do nothing player already exists
+                }else{
+                    //add new player
+                    if self.totalSeatPlayers.count == 1{
+                        let player2 = Player(playerNum: self.totalSeatPlayers.count + 1)
+                        let d = data[0] as! [String:String]
+                        player2.uid = d["id"]
+                        self.seat2 = Seat()
+                        self.seat2.player = player2
+                        self.player2NameLabel.text = "Player: " + String(player2.playerNum)
+                        self.totalSeatPlayers.append(self.seat2)
+                        self.seat2.seatImage = self.playedCard2
+                    }else if self.totalSeatPlayers.count == 2{
+                        let player3 = Player(playerNum: self.totalSeatPlayers.count + 1)
+                        let d = data[0] as! [String:String]
+                        player3.uid = d["id"]
+                        self.seat3 = Seat()
+                        self.seat3.player = player3
+                        self.seat3.seatImage = self.playedCard3
+                        //self.player3NameLabel.text = String(player3.playerNum)
+                        self.totalSeatPlayers.append(self.seat2)
+                    }else if self.totalSeatPlayers.count == 3{
+                        let player4 = Player(playerNum: self.totalSeatPlayers.count + 1)
+                        let d = data[0] as! [String:String]
+                        player4.uid = d["id"]
+                        self.seat4 = Seat()
+                        self.seat4.player = player4
+                        self.seat4.seatImage = self.playedCard4
+                        //self.player4NameLabel.text = String(player4.playerNum)
+                        self.totalSeatPlayers.append(self.seat2)
+                    }
+                }
+                
+            }
+            
+            
+            self.newGameBtn.isHidden = false
+            
             // var playersArray: [Player]
             // grab indices: playersArray.index(of: Player)
             // alternatively, have a Seat() class, Seat.player = Player()
         }
         
-        socket.on("updatePoints"){data, ack in
-            print("Winner player is: \(data)")
+        socket.on("cardsDealt"){data, ack in
+            //2 players
+            let players = data[0] as! [AnyObject]
             
-            if let dictionary = data[0] as? [String:Any]{
-                print(dictionary["id"]!)
+            for index in 0...players.count-1{
+                //grab one player
+                let player = players[index] as! [String:Any]
+                let id = self.totalSeatPlayers[0].player.uid
+                //compare using firebase ids
+                if id == (player["id"] as! String){
+                    //grab hand from player
+                    let hand = player["hand"] as! [AnyObject]
+                    
+                    //list of cards
+                    var temp = [String]()
+                    for index in 0...hand.count-1{
+                        
+                        let rank = hand[index]["description"] as AnyObject
+                        let suit = hand[index]["suit"] as AnyObject
+                        
+                        temp.append(rank as! String)
+                        temp.append(suit as! String)
+                    }
+                    print(temp)
+                    var tempCard = [String]()
+                    
+                    self.cardImageArray[5].image = UIImage(named:"back")
+                    self.cardImageArray[6].image = UIImage(named:"back")
+                    self.cardImageArray[7].image = UIImage(named:"back")
+                    var maxCards = 5
+                    if self.game.atoutSelected != ""{
+                        maxCards = 8
+                    }
+                    
+                    for index in 0...maxCards-1{
+                        tempCard.removeAll()
+                        
+                        tempCard.append(temp[2*index])
+                        tempCard.append(temp[2*index+1])
+                        for _ in 0...tempCard.count-1{
+                            
+                            
+                            if tempCard[0] == "Seven"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "7_of_hearts")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.seven, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "7_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.seven, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "7_of_spades")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.seven, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "7_of_clubs")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.seven, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Eight"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "8_of_hearts")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.eight, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "8_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.eight, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "8_of_spades")
+                                      self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.eight, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "8_of_clubs")
+                                      self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.eight, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Nine"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "9_of_hearts")
+                                      self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.nine, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "9_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.nine, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "9_of_spades")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.nine, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "9_of_clubs")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.nine, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Ten"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "10_of_hearts")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ten, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "10_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ten, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "10_of_spades")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ten, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "10_of_clubs")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ten, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Jack"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "jack_of_hearts")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.jack, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "jack_of_diamonds")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.jack, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "jack_of_spades")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.jack, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "jack_of_clubs")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.jack, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Queen"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "queen_of_hearts")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.queen, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "queen_of_diamonds")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.queen, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "queen_of_spades")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.queen, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "queen_of_clubs")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.queen, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "King"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "king_of_hearts")
+                                     self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.king, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "king_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.king, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "king_of_spades")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.king, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "king_of_clubs")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.king, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                            if tempCard[0] == "Ace"{
+                                if tempCard[1] == "Heart"{
+                                    self.cardImageArray[index].image = UIImage(named: "ace_of_hearts")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ace, suit: Card.Suit.heart, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Diamond"{
+                                    self.cardImageArray[index].image = UIImage(named: "ace_of_diamonds")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ace, suit: Card.Suit.diamond, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Spade"{
+                                    self.cardImageArray[index].image = UIImage(named: "ace_of_spades")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ace, suit: Card.Suit.spade, image: self.cardImageArray[index].image!))
+                                }
+                                if tempCard[1] == "Club"{
+                                    self.cardImageArray[index].image = UIImage(named: "ace_of_clubs")
+                                    self.seat1.player.cardsInHand.append(Card(rank: Card.Rank.ace, suit: Card.Suit.club, image: self.cardImageArray[index].image!))
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        }
+        
+        socket.on("selectAtout"){data, ack in
+            if self.seat1.player.uid == data[0] as! String{
+                self.waitingLabel.isHidden = true
+                self.newGameBtn.isHidden = true
+                self.selectAtout.isHidden = false
+                self.heartBtnOutlet.isHidden = false
+                self.diamondBtnOutlet.isHidden = false
+                self.clubBtnOutlet.isHidden = false
+                self.spadeBtnOutlet.isHidden = false
+                self.pass.isHidden = false
+            }
+        }
+        
+        socket.on("atoutSelected") {data, ack in
+            self.game.atoutSelected = data[0] as! String
+            self.atoutLabel.text = self.game.atoutSelected
+        }
+        
+        socket.on("displayCard"){ data, ack in
+            let cardPlayed = data[0] as! [String:Any]
+            for seat in self.totalSeatPlayers{
+                if seat.player.uid == cardPlayed["id"] as! String{
+                    
+                    if cardPlayed["rank"] as! Int64 == 0{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            
+                            seat.seatImage.image = UIImage(named: "7_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "7_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "7_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "7_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 1{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "8_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "8_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "8_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "8_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 2{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "9_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "9_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "9_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "9_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 3{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "10_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "10_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "10_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "10_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 4{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "jack_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "jack_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "jack_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "jack_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 5{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "queen_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "queen_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "queen_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "queen_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 6{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "king_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "king_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "king_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "king_of_spades")
+                        }
+                    }
+                    if cardPlayed["rank"] as! Int64 == 7{
+                        if cardPlayed["suit"] as! String == "heart"{
+                            seat.seatImage.image = UIImage(named: "ace_of_hearts")
+                        }
+                        if cardPlayed["suit"] as! String == "diamond"{
+                            seat.seatImage.image = UIImage(named: "ace_of_diamonds")
+                        }
+                        if cardPlayed["suit"] as! String == "club"{
+                            seat.seatImage.image = UIImage(named: "ace_of_clubs")
+                        }
+                        if cardPlayed["suit"] as! String == "spade"{
+                            seat.seatImage.image = UIImage(named: "ace_of_spades")
+                        }
+                    }
+                }
+            }
+        }
+        
+        socket.on("roundResult"){data, ack in
+            print("Winner player is: \(data)")
+            let result = data[0] as! [String:Any]
+            let score = result["score"] as! Int
+            let winnerID = result["winnerID"] as! String
+            for seat in self.totalSeatPlayers{
+                if winnerID == seat.player.uid{
+                    if seat.player.playerNum == 1 || seat.player.playerNum == 3{
+                        self.team1Score.text = "Team 1: " + String(score)
+                    }else{
+                        self.team2Score.text = "Team 2: " + String(score)
+                    }
+                }
+            }
+            
         }
         socket.connect()
     }
     
-    
     func pingServer(){
-        var urlRequest = URLRequest(url: URL(string:"http://138.197.16.105:3000/start")!)
+        var urlRequest = URLRequest(url: URL(string:"http://159.203.87.174:5858")!)
         
         //setting the method to post
         urlRequest.httpMethod = "POST"
@@ -213,7 +621,6 @@ class GameViewController: UIViewController {
     
     func cardInteraction(){
       tagNum = 0
-        
         for index in 0...cardImageArray.count-1{
             cardImageArray[index].tag = tagNum
             cardImageArray[index].isUserInteractionEnabled = true
@@ -225,9 +632,6 @@ class GameViewController: UIViewController {
     
     func moveImage(view: UIImageView) -> UIImageView{
         
-       
-      //  view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - 20, width: view.frame.width, height: view.frame.height)
-        
         UIView.animate(withDuration: 0.2, animations: {
         view.frame.origin.y -= 20
         })
@@ -235,10 +639,9 @@ class GameViewController: UIViewController {
     }
     
     func cardImageTapped(sender:UITapGestureRecognizer){
-         
-        // pingServer()
-        tapCount += 1
         
+        tapCount += 1
+        print(sender.view!)
         print(tapCount)
         if tapCount == 1{
             selectedCardView = moveImage(view: sender.view as! UIImageView)
@@ -247,42 +650,40 @@ class GameViewController: UIViewController {
         if tapCount == 2 {
             if sender.view == selectedCardView{
                 tapCount = 0
-                playedCard1.image = nil
-                playedCard2.image = nil
-                playedCard3.image = nil
-                playedCard4.image = nil
-                
-                game.playedCards.removeAll()
-                cardInteraction()
-                
+
                 let tag = sender.view!.tag
                 
-                game.playCard(card: game.player1.cardsInHand[tag])
+                //game.playCard(card: seat1.player.cardsInHand[tag])
+                
                
                 //send player 1 card value
-                socket.emit("cardPlayed", ["id":uid,"rank":game.player1.cardsInHand[tag].rank.rawValue, "suit":game.player1.cardsInHand[tag].suit.rawValue])
-                
-                
+                if seat1.player.cardsInHand[tag].suit.rawValue == game.atoutSelected{
+                    socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueAtout()])
+                    waitingLabel.isHidden = false
+                }else{
+                     socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueNonAtout()])
+                    waitingLabel.isHidden = false
+                }
                 
                 cardImageArray[tag].isHidden = true
                 selectedCardView.transform = CGAffineTransform(translationX: 0, y: 0)
                 cardImageArray.remove(at: tag)
                 
                 //check next card with previous card
-                game.checkNextCard(card: game.player1.cardsInHand[tag], player: game.player1)
+                //game.checkNextCard(card: seat1.player.cardsInHand[tag], player: seat1.player)
                 
-                displayPlayedCards()
+                //displayPlayedCards()
                 
-                deck = game.player1.removeCardFromHand(player:game.player1, passedCard:game.player1.cardsInHand[tag], deck: deck)
+                //deck = game.player1.removeCardFromHand(player:game.player1, passedCard:game.player1.cardsInHand[tag], deck: deck)
                 
-                let winner = game.comparePlayedCards()
-                winnerLabel.text = "Player " + String(winner.playerNum) + " wins!"
-                let tempScore = game.calculateScore()
-                if winner.playerNum == game.player1.playerNum || winner.playerNum == game.player3.playerNum{
-                    team1Score.text = "Team 1: " + String(tempScore)
-                }else if winner.playerNum == game.player2.playerNum || winner.playerNum == game.player4.playerNum{
-                    team2Score.text = "Team 2: " + String(tempScore)
-                }
+                //let winner = game.comparePlayedCards()
+                //winnerLabel.text = "Player " + String(winner.playerNum) + " wins!"
+//                let tempScore = game.calculateScore()
+//                if winner.playerNum == game.player1.playerNum || winner.playerNum == game.player3.playerNum{
+//                    team1Score.text = "Team 1: " + String(tempScore)
+//                }else if winner.playerNum == game.player2.playerNum || winner.playerNum == game.player4.playerNum{
+//                    team2Score.text = "Team 2: " + String(tempScore)
+//                }
                 
                 tapCount = 0
                 }else{
@@ -297,92 +698,66 @@ class GameViewController: UIViewController {
             newGameBtn.isHidden = false
         }
     }
-    
-    func startGame(){
-        newGameBtn.isHidden = true
-        selectAtout.isHidden = false
-        pass.isHidden = false
-        heartBtnOutlet.isHidden = false
-        diamondBtnOutlet.isHidden = false
-        clubBtnOutlet.isHidden = false
-        spadeBtnOutlet.isHidden = false
-        
-        cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
-        
-        deck = cardObj.generateDeck()
-        
-        let shuffledDeck = deckObj.shuffleDeck(deck: deck)
-        
-        deckObj.dealCards(player1: game.player1, player2: game.player2, player3: game.player3, player4: game.player4, deck: shuffledDeck)
-        card1.isHidden = false
-        card2.isHidden = false
-        card3.isHidden = false
-        card4.isHidden = false
-        card5.isHidden = false
-        card6.isHidden = false
-        card7.isHidden = false
-        card8.isHidden = false
-        card1.image = game.player1.cardsInHand[0].image
-        card2.image = game.player1.cardsInHand[1].image
-        card3.image = game.player1.cardsInHand[2].image
-        card4.image = game.player1.cardsInHand[3].image
-        card5.image = game.player1.cardsInHand[4].image
-        card6.image = UIImage(named: "back")
-        card7.image = UIImage(named: "back")
-        card8.image = UIImage(named: "back")
 
-        
-        cardInteraction()
-    }
-    
-    func displayPlayedCard(playerID:String, rank:Int, suit:String){
-        
-    }
 
-    func displayPlayedCards(){
-        //Played Cards from other players
-        game.playCard(card:game.player2.playableCards.first!)
-        //send player 2 card value
-        socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue])
-
-        print(game.playedCards[1].rank, game.playedCards[1].suit.rawValue)
-        game.checkNextCard(card: game.playedCards.first!, player: game.player2)
-        
-        game.playCard(card:game.player3.playableCards.first!)
-        //send player 3 card value
-        socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue])
-        
-        
-        print(game.playedCards[2].rank, game.playedCards[2].suit.rawValue)
-        game.checkNextCard(card: game.playedCards.first!, player: game.player3)
-        
-        game.playCard(card:game.player4.playableCards.first!)
-        //send player 4 card value
-        socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue])
-        
-        socket.emit("compareCards")
-        print(game.playedCards[3].rank, game.playedCards[3].suit.rawValue)
-        
-        //remove card from hand
-        deck = game.player2.removeCardFromHand(player:game.player2, passedCard:game.player2.playableCards.first!, deck: deck)
-        deck = game.player3.removeCardFromHand(player:game.player3, passedCard: game.player3.playableCards.first! , deck: deck)
-        deck = game.player4.removeCardFromHand(player:game.player4, passedCard:game.player4.playableCards.first!, deck: deck)
-        
-        let cards = game.getPlayedCards
-        // if seat1.player.id == id <--- arg
-        // seat1.image = ...
-        playedCard1.image = cards()[0].image
-        playedCard2.image = cards()[1].image
-        playedCard3.image = cards()[2].image
-        playedCard4.image = cards()[3].image
-    }
+//    func displayPlayedCards(){
+//        //Played Cards from other players
+//        game.playCard(card:game.player2.playableCards.first!)
+//        //send player 2 card value
+//        //socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue])
+//        if game.player2.playableCards.first!.suit.rawValue == game.atoutSelected{
+//            socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue, "value":game.player2.playableCards.first!.rank.cardsValueAtout()])
+//        }else{
+//             socket.emit("cardPlayed", ["id":2,"rank":game.player2.playableCards.first!.rank.rawValue, "suit":game.player2.playableCards.first!.suit.rawValue, "value":game.player2.playableCards.first!.rank.cardsValueNonAtout()])
+//        }
+//
+//        print(game.playedCards[1].rank, game.playedCards[1].suit.rawValue)
+//        game.checkNextCard(card: game.playedCards.first!, player: game.player2)
+//        
+//        game.playCard(card:game.player3.playableCards.first!)
+//        //send player 3 card value
+//        //socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue])
+//        if game.player3.playableCards.first!.suit.rawValue == game.atoutSelected{
+//            socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue, "value":game.player3.playableCards.first!.rank.cardsValueAtout()])
+//        }else{
+//            socket.emit("cardPlayed", ["id":3,"rank":game.player3.playableCards.first!.rank.rawValue, "suit":game.player3.playableCards.first!.suit.rawValue, "value":game.player3.playableCards.first!.rank.cardsValueNonAtout()])
+//        }
+//        
+//        print(game.playedCards[2].rank, game.playedCards[2].suit.rawValue)
+//        game.checkNextCard(card: game.playedCards.first!, player: game.player3)
+//        
+//        game.playCard(card:game.player4.playableCards.first!)
+//        //send player 4 card value
+//        //socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue])
+//        if game.player4.playableCards.first!.suit.rawValue == game.atoutSelected{
+//            socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue,"suit":game.player4.playableCards.first!.suit.rawValue, "value":game.player4.playableCards.first!.rank.cardsValueAtout()])
+//        }else{
+//            socket.emit("cardPlayed", ["id":4,"rank":game.player4.playableCards.first!.rank.rawValue, "suit":game.player4.playableCards.first!.suit.rawValue, "value":game.player4.playableCards.first!.rank.cardsValueNonAtout()])
+//        }
+//        socket.emit("compareCards")
+//        print(game.playedCards[3].rank, game.playedCards[3].suit.rawValue)
+//        
+//        //remove card from hand
+//        deck = game.player2.removeCardFromHand(player:game.player2, passedCard:game.player2.playableCards.first!, deck: deck)
+//        deck = game.player3.removeCardFromHand(player:game.player3, passedCard: game.player3.playableCards.first! , deck: deck)
+//        deck = game.player4.removeCardFromHand(player:game.player4, passedCard:game.player4.playableCards.first!, deck: deck)
+//        
+//        let cards = game.getPlayedCards
+//        // if seat1.player.id == id <--- arg
+//        // seat1.image = ...
+//        playedCard1.image = cards()[0].image
+//        playedCard2.image = cards()[1].image
+//        playedCard3.image = cards()[2].image
+//        playedCard4.image = cards()[3].image
+//    }
     
     @IBAction func newGameBtn(_ sender: UIButton) {
-        playedCard1.image = nil
-        playedCard2.image = nil
-        playedCard3.image = nil
-        playedCard4.image = nil
-        startGame()
+        socket.emit("startGame", ["uid":seat1.player.uid])
+//        playedCard1.image = nil
+//        playedCard2.image = nil
+//        playedCard3.image = nil
+//        playedCard4.image = nil
+//        startGame()
     }
     
 }
