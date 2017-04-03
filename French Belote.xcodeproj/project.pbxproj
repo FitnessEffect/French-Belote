@@ -16,7 +16,6 @@
 		5209D1B41DF4C5B600042CCD /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B31DF4C5B600042CCD /* Card.swift */; };
 		5209D1B61DF4CD8900042CCD /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B51DF4CD8900042CCD /* Deck.swift */; };
 		5209D1B81DF4D52100042CCD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B71DF4D52100042CCD /* Player.swift */; };
-		5209D1BA1DF4EC6E00042CCD /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1B91DF4EC6E00042CCD /* GameSession.swift */; };
 		5231C3671DF5D0A10049B42D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231C3661DF5D0A10049B42D /* LoginViewController.swift */; };
 		523C148F1E7B61460052AAC3 /* Seat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C148E1E7B61460052AAC3 /* Seat.swift */; };
 		52BC01FB1DF7091B00223BD6 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BC01FA1DF7091B00223BD6 /* CardView.swift */; };
@@ -37,7 +36,6 @@
 		5209D1B31DF4C5B600042CCD /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		5209D1B51DF4CD8900042CCD /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		5209D1B71DF4D52100042CCD /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		5209D1B91DF4EC6E00042CCD /* GameSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
 		5231C3661DF5D0A10049B42D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		523C148E1E7B61460052AAC3 /* Seat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Seat.swift; sourceTree = "<group>"; };
 		52BC01FA1DF7091B00223BD6 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardView.swift; path = ../CardView.swift; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 				5209D1A31DF4C59C00042CCD /* GameViewController.swift */,
 				523C148E1E7B61460052AAC3 /* Seat.swift */,
 				5209D1B71DF4D52100042CCD /* Player.swift */,
-				5209D1B91DF4EC6E00042CCD /* GameSession.swift */,
 				5209D1B31DF4C5B600042CCD /* Card.swift */,
 				5209D1B51DF4CD8900042CCD /* Deck.swift */,
 				5209D1A51DF4C59C00042CCD /* Main.storyboard */,
@@ -257,7 +254,6 @@
 				5209D1B41DF4C5B600042CCD /* Card.swift in Sources */,
 				5209D1B81DF4D52100042CCD /* Player.swift in Sources */,
 				523C148F1E7B61460052AAC3 /* Seat.swift in Sources */,
-				5209D1BA1DF4EC6E00042CCD /* GameSession.swift in Sources */,
 				52BC01FB1DF7091B00223BD6 /* CardView.swift in Sources */,
 				5209D1A21DF4C59C00042CCD /* AppDelegate.swift in Sources */,
 			);

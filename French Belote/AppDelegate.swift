@@ -46,10 +46,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         //if remember is false {
-        do{
-       try FIRAuth.auth()?.signOut()
-        }catch{
-            
+        let storyboard = UIStoryboard(name:"Main", bundle:nil)
+        let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC") as! LoginViewController
+        if loginVC.rememberMeSwitch.isOn == false{
+            //skip
+        }else{
+            do{
+                try FIRAuth.auth()?.signOut()
+            }catch{
+                
+            }
         }
     }
 
