@@ -14,13 +14,27 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
+    
+    @IBOutlet weak var rememberMeSwitch: UISwitch!
 
+    let prefs = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         FIRAuth.auth()?.addStateDidChangeListener({auth, user in
             //check if remember me is true
-            if user != nil{
-                  self.performSegue(withIdentifier: "segueGame", sender: self)
+            if self.prefs.object(forKey: "switch") as? Bool == true{
+                if user != nil{
+                    if let temp = self.prefs.object(forKey: "email") as? String{
+                        self.emailTF.text = temp
+                    }
+                    if let temp = self.prefs.object(forKey: "password") as? String{
+                        self.passwordTF.text = temp
+                    }
+                    if let temp = self.prefs.object(forKey: "switch") as? Bool{
+                        self.rememberMeSwitch.isOn = temp
+                    }
+                }
             }
         })
         // Do any additional setup after loading the view.
@@ -32,8 +46,13 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: UIButton) {
-        FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:nil)
-        
+        prefs.set(emailTF.text, forKey: "email")
+        prefs.set(passwordTF.text, forKey:"password")
+        prefs.set(rememberMeSwitch.isOn, forKey:"switch")
+        FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:{(success) in
+            self.performSegue(withIdentifier: "segueGame", sender: self)
+        })
+
     }
     
     @IBAction func register(_ sender: UIButton) {
