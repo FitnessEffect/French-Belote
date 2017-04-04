@@ -112,8 +112,8 @@ class GameViewController: UIViewController {
         }else if sender.titleLabel?.text == "♠️"{
             atoutSelected = "spade"
             
-        }else if sender.titleLabel?.text == "Pass"{
-            
+        }else if sender.titleLabel?.text == "☞"{
+            atoutSelected = "pass"
             socket.emit("setAtout", ["atout":"pass", "uid":seat1.player.uid])
             selectAtout.isHidden = true
             heartBtnOutlet.isHidden = true
@@ -124,7 +124,11 @@ class GameViewController: UIViewController {
             return
         }
         
-        socket.emit("setAtout", ["atout":atoutSelected])
+        socket.emit("setAtout", ["atout":atoutSelected, "id":seat1.player.uid])
+        //socket.emit("playerTurn", ["id":seat1.player.uid])
+        if atoutSelected != "pass"{
+          self.waitingLabel.text = "Pick your card!"
+        }
         selectAtout.isHidden = true
         heartBtnOutlet.isHidden = true
         diamondBtnOutlet.isHidden = true
@@ -142,10 +146,26 @@ class GameViewController: UIViewController {
             
         }
         
-        //        socket.on("updatePlayers"){data, ack in
-        //            print(data)
-        //            //find out number of players
-        //        }
+        socket.on("waitingPlayers") {data, ack in
+            let pID = data[0] as! String
+            var tempPlayer = ""
+            for seat in self.totalSeatPlayers{
+                if seat.player.uid == pID{
+                    tempPlayer = String(seat.player.playerNum)
+                }
+            }
+            if self.seat1.player.uid != pID{
+               self.waitingLabel.text = "Waiting for Player " + tempPlayer
+                for card in self.cardImageArray{
+                    card.isUserInteractionEnabled = false
+                }
+            }else{
+                self.waitingLabel.text = "Pick your card!"
+                for card in self.cardImageArray{
+                    card.isUserInteractionEnabled = true
+                }
+            }
+        }
         
         socket.on("playerJoined") {data, ack in
             let dictionary = data[0] as! [String:Any]
@@ -188,10 +208,7 @@ class GameViewController: UIViewController {
             }
             
             self.newGameBtn.isHidden = false
-            
-            // var playersArray: [Player]
-            // grab indices: playersArray.index(of: Player)
-            // alternatively, have a Seat() class, Seat.player = Player()
+
         }
         
         socket.on("cardsDealt"){data, ack in
@@ -390,7 +407,7 @@ class GameViewController: UIViewController {
         
         socket.on("selectAtout"){data, ack in
             if self.seat1.player.uid == data[0] as! String{
-                self.waitingLabel.isHidden = true
+               // self.waitingLabel.isHidden = true
                 self.selectAtout.isHidden = false
                 self.heartBtnOutlet.isHidden = false
                 self.diamondBtnOutlet.isHidden = false
@@ -413,6 +430,7 @@ class GameViewController: UIViewController {
                 self.atoutLabel.text = "♣️"
             }
         }
+        
         
         socket.on("displayCard"){ data, ack in
             let cardPlayed = data[0] as! [String:Any]
@@ -638,10 +656,10 @@ class GameViewController: UIViewController {
                 //send player card value
                 if seat1.player.cardsInHand[tag].suit.rawValue == atoutSelected{
                     socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueAtout()])
-                    waitingLabel.isHidden = false
+                  //  waitingLabel.isHidden = false
                 }else{
                     socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueNonAtout()])
-                    waitingLabel.isHidden = false
+                   // waitingLabel.isHidden = false
                 }
                 
                 
