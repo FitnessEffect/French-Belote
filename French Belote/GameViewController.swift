@@ -19,6 +19,10 @@ class GameViewController: UIViewController {
     @IBOutlet weak var player2Image: UIImageView!
     @IBOutlet weak var atoutLabel: UILabel!
     
+    @IBOutlet weak var player2username: UILabel!
+    @IBOutlet weak var player3username: UILabel!
+    @IBOutlet weak var player4username: UILabel!
+    
     @IBOutlet weak var card1: UIImageView!
     @IBOutlet weak var card2: UIImageView!
     @IBOutlet weak var card3: UIImageView!
@@ -37,6 +41,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var clubBtnOutlet: UIButton!
     @IBOutlet weak var spadeBtnOutlet: UIButton!
     @IBOutlet weak var newGameBtn: UIButton!
+    @IBOutlet weak var talkBtn: UIButton!
     
     @IBOutlet weak var playedCard1: UIImageView!
     @IBOutlet weak var playedCard2: UIImageView!
@@ -71,6 +76,7 @@ class GameViewController: UIViewController {
     var scoreTeam1:Int!
     var scoreTeam2:Int!
     var atoutSelected = ""
+    var tempUsername = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,11 +86,17 @@ class GameViewController: UIViewController {
         newGameBtn.layer.borderWidth = 1
         newGameBtn.layer.borderColor = UIColor.black.cgColor
         
+        talkBtn.isHidden = true
+        
         player2Dialogue.image = UIImage(named: "dialogue.png")
         player2Dialogue.isHidden = true
         player2Message.isHidden = true
         player2Dialogue.alpha = 0
         player2Message.alpha = 0
+        
+        player2username.isHidden = true
+        player3username.isHidden = true
+        player4username.isHidden = true
         
         uid = FIRAuth.auth()?.currentUser?.uid
         openSocket()
@@ -94,6 +106,7 @@ class GameViewController: UIViewController {
         seat1.player = Player(playerNum: 1)
         seat1.player.uid = uid
         seat1.seatImage = playedCard1
+        
         
         totalSeatPlayers.append(seat1)
         
@@ -141,7 +154,6 @@ class GameViewController: UIViewController {
         
         wagerCard.isHidden = true
         socket.emit("setAtout", ["atout":atoutSelected, "id":seat1.player.uid])
-        //socket.emit("playerTurn", ["id":seat1.player.uid])
         if atoutSelected != "pass"{
           self.waitingLabel.text = "Pick your card!"
         }
@@ -155,7 +167,7 @@ class GameViewController: UIViewController {
     func openSocket(){
         socket = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
         socket.on("connect") {data, ack in
-            self.socket.emit("addNewPlayer", ["id":self.uid])
+            self.socket.emit("addNewPlayer", ["id":self.uid, "username":self.tempUsername])
             self.socket.emit("updatePlayers")
             //check if seat is occupied by a player
             
@@ -320,9 +332,32 @@ class GameViewController: UIViewController {
             }
         }
         
+        socket.on("removePlayer"){data, ack in
+            let dictionary = data[0] as! [String:Any]
+            let id = dictionary["uid"] as! String
+            for index in 0...self.totalSeatPlayers.count-1{
+                if self.totalSeatPlayers[index].player.uid == id {
+                    
+                    self.totalSeatPlayers.remove(at: index)
+                    if index == 1{
+                        self.player2Image.image = nil
+                        self.playedCard2.image = nil
+                    }else if index == 2{
+                        self.player3Image.image = nil
+                        self.playedCard3.image = nil
+                    }else if index == 3{
+                        self.player4Image.image = nil
+                        self.playedCard4.image = nil
+                    }
+                }
+            }
+        }
+        
         socket.on("playerJoined") {data, ack in
+            print(data)
             let dictionary = data[0] as! [String:Any]
             let id = dictionary["id"] as! String
+            let tempUsername = dictionary["username"] as! String
             for seat in self.totalSeatPlayers{
                 
                 if seat.player.uid == id{
@@ -338,6 +373,9 @@ class GameViewController: UIViewController {
                         self.player2Image.image = UIImage(named: "avatar1.png")
                         self.totalSeatPlayers.append(self.seat2)
                         self.seat2.seatImage = self.playedCard2
+                        self.seat2.player.username = tempUsername
+                        self.player2username.text = tempUsername
+                        self.player2username.isHidden = false
                     }else if self.totalSeatPlayers.count == 2{
                         let player3 = Player(playerNum: self.totalSeatPlayers.count + 1)
                         let d = data[0] as! [String:String]
@@ -347,6 +385,9 @@ class GameViewController: UIViewController {
                         self.seat3.seatImage = self.playedCard3
                         self.player3Image.image = UIImage(named: "avatar2.png")
                         self.totalSeatPlayers.append(self.seat2)
+                        self.seat3.player.username = tempUsername
+                        self.player3username.text = tempUsername
+                        self.player3username.isHidden = false
                     }else if self.totalSeatPlayers.count == 3{
                         let player4 = Player(playerNum: self.totalSeatPlayers.count + 1)
                         let d = data[0] as! [String:String]
@@ -354,13 +395,21 @@ class GameViewController: UIViewController {
                         self.seat4 = Seat()
                         self.seat4.player = player4
                         self.seat4.seatImage = self.playedCard4
-                         self.player4Image.image = UIImage(named: "avatar3.png")
+                        self.player4Image.image = UIImage(named: "avatar3.png")
                         self.totalSeatPlayers.append(self.seat2)
+                        self.seat4.player.username = tempUsername
+                        self.player4username.text = tempUsername
+                        self.player4username.isHidden = false
                     }
                 }
             }
             
+            
             self.newGameBtn.isHidden = false
+            if self.totalSeatPlayers.count > 1{
+                self.talkBtn.isHidden = false
+            }
+            
 
         }
         
@@ -741,6 +790,10 @@ class GameViewController: UIViewController {
         socket.connect()
     }
     
+    func setUsername(username:String){
+        tempUsername = username
+    }
+    
     
     func pingServer(){
         var urlRequest = URLRequest(url: URL(string:"http://159.203.87.174:5858")!)
@@ -852,4 +905,14 @@ class GameViewController: UIViewController {
         socket.emit("startGame", ["uid":seat1.player.uid])
     }
     
+    
+    @IBAction func logoutBtn(_ sender: UIButton) {
+        do{
+            try FIRAuth.auth()?.signOut()
+            socket.emit("playerLeft", ["uid":seat1.player.uid])
+            self.dismiss(animated: true, completion: nil)
+        }catch{
+            print(error)
+        }
+    }
 }
