@@ -42,6 +42,7 @@
 		52BC01FC1DF8880A00223BD6 /* French Belote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "French Belote.entitlements"; sourceTree = "<group>"; };
 		52BC01FE1DF8882E00223BD6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		52D4A0281DFB87F200715F5D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		52F8CF8B1E9D249000C18B27 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = "../../../Library/Developer/Xcode/DerivedData/French_Belote-dhcrwwnhlpdexmauydvvbnegrjcw/Build/Products/Debug-iphonesimulator/Socket.IO-Client-Swift/SocketIO.framework"; sourceTree = "<group>"; };
 		7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_French_Belote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,6 +101,7 @@
 		52BC01FD1DF8882E00223BD6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52F8CF8B1E9D249000C18B27 /* SocketIO.framework */,
 				52BC01FE1DF8882E00223BD6 /* CloudKit.framework */,
 				7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */,
 			);
@@ -145,7 +147,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = com.example;
 				TargetAttributes = {
 					5209D19D1DF4C59C00042CCD = {
@@ -331,6 +333,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -376,6 +379,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -390,6 +394,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = JF325HQHWJ;
 				INFOPLIST_FILE = "French Belote/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.auvergne.gmail.French-Belote";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -407,6 +412,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = JF325HQHWJ;
 				INFOPLIST_FILE = "French Belote/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.auvergne.gmail.French-Belote";
 				PRODUCT_NAME = "$(TARGET_NAME)";

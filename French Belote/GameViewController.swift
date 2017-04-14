@@ -112,9 +112,9 @@ class GameViewController: UIViewController {
         
         newGameBtn.isHidden = true
         
-        cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
+        //cardImageArray = [card1, card2, card3, card4, card5, card6, card7, card8]
         
-        cardInteraction()
+        //cardInteraction()
         
         heartBtnOutlet.isHidden = true
         diamondBtnOutlet.isHidden = true
@@ -175,6 +175,7 @@ class GameViewController: UIViewController {
         
         
         socket.on("showCard"){ data, ack in
+            print(data)
             let cardPlayed = data[0] as! [String:Any]
             if cardPlayed["description"] as! String == "Seven"{
                 if cardPlayed["suit"] as! String == "Heart"{
@@ -310,6 +311,15 @@ class GameViewController: UIViewController {
                 self.player2Dialogue.isHidden = true
             }
         }
+        
+        socket.on("resetGame"){
+            data,ack in
+            self.cardImageArray.removeAll()
+            self.seat1.player.cardsInHand.removeAll()
+            self.cardImageArray = [self.card1, self.card2, self.card3, self.card4, self.card5, self.card6, self.card7, self.card8]
+            self.cardInteraction()
+            
+        }
     
         socket.on("waitingPlayers") {data, ack in
             let pID = data[0] as! String
@@ -357,6 +367,7 @@ class GameViewController: UIViewController {
             print(data)
             let dictionary = data[0] as! [String:Any]
             let id = dictionary["id"] as! String
+           // let players = dictionary["players"] as! [Anyobject]
             let tempUsername = dictionary["username"] as! String
             for seat in self.totalSeatPlayers{
                 
@@ -366,8 +377,8 @@ class GameViewController: UIViewController {
                     //add new player
                     if self.totalSeatPlayers.count == 1{
                         let player2 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:String]
-                        player2.uid = d["id"]
+                        let d = data[0] as! [String:Any]
+                        player2.uid = d["id"] as! String
                         self.seat2 = Seat()
                         self.seat2.player = player2
                         self.player2Image.image = UIImage(named: "avatar1.png")
@@ -376,30 +387,33 @@ class GameViewController: UIViewController {
                         self.seat2.player.username = tempUsername
                         self.player2username.text = tempUsername
                         self.player2username.isHidden = false
+                        break
                     }else if self.totalSeatPlayers.count == 2{
                         let player3 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:String]
-                        player3.uid = d["id"]
+                        let d = data[0] as! [String:Any]
+                        player3.uid = d["id"] as! String
                         self.seat3 = Seat()
                         self.seat3.player = player3
                         self.seat3.seatImage = self.playedCard3
                         self.player3Image.image = UIImage(named: "avatar2.png")
-                        self.totalSeatPlayers.append(self.seat2)
+                        self.totalSeatPlayers.append(self.seat3)
                         self.seat3.player.username = tempUsername
                         self.player3username.text = tempUsername
                         self.player3username.isHidden = false
+                        break
                     }else if self.totalSeatPlayers.count == 3{
                         let player4 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:String]
-                        player4.uid = d["id"]
+                        let d = data[0] as! [String:Any]
+                        player4.uid = d["id"] as! String
                         self.seat4 = Seat()
                         self.seat4.player = player4
                         self.seat4.seatImage = self.playedCard4
                         self.player4Image.image = UIImage(named: "avatar3.png")
-                        self.totalSeatPlayers.append(self.seat2)
+                        self.totalSeatPlayers.append(self.seat4)
                         self.seat4.player.username = tempUsername
                         self.player4username.text = tempUsername
                         self.player4username.isHidden = false
+                        break
                     }
                 }
             }
@@ -414,7 +428,12 @@ class GameViewController: UIViewController {
         }
         
         socket.on("cardsDealt"){data, ack in
+    
             self.newGameBtn.isHidden = true
+            
+            self.cardImageArray = [self.card1, self.card2, self.card3, self.card4, self.card5, self.card6, self.card7, self.card8]
+            self.cardInteraction()
+           
             self.seat1.player.cardsInHand.removeAll()
             //2 players
             let players = data[0] as! [AnyObject]
@@ -440,12 +459,16 @@ class GameViewController: UIViewController {
                     }
                     var tempCard = [String]()
                     
+                    //why is cardImageArray=0 second time around?
                     self.cardImageArray[5].image = UIImage(named:"back")
                     self.cardImageArray[6].image = UIImage(named:"back")
                     self.cardImageArray[7].image = UIImage(named:"back")
+                    
                     var maxCards = 5
                     if self.atoutSelected != ""{
                         maxCards = 8
+                    }else{
+                        self.wagerCard.isHidden = false
                     }
                     
                     for index in 0...maxCards-1{
@@ -633,7 +656,6 @@ class GameViewController: UIViewController {
             }
         }
         
-
         
         socket.on("displayCard"){ data, ack in
             let cardPlayed = data[0] as! [String:Any]
@@ -778,6 +800,11 @@ class GameViewController: UIViewController {
             self.wagerCard.isHidden = true
         }
         
+        socket.on("clearAtout"){data, ack in
+            self.atoutLabel.text = ""
+            self.atoutSelected = ""
+        }
+        
         socket.on("clearBoard") {data, ack in
             let when = DispatchTime.now() + 3 // number of seconds
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -839,6 +866,7 @@ class GameViewController: UIViewController {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cardImageTapped(sender:)))
             cardImageArray[index].addGestureRecognizer(tapGesture)
             tagNum += 1
+            cardImageArray[index].isHidden = false
         }
     }
     
