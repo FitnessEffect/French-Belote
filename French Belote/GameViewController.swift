@@ -48,10 +48,19 @@ class GameViewController: UIViewController {
     @IBOutlet weak var playedCard3: UIImageView!
     @IBOutlet weak var playedCard4: UIImageView!
     @IBOutlet weak var pass: UIButton!
+    
     @IBOutlet weak var player2Dialogue: UIImageView!
-
     @IBOutlet weak var player2Message: UILabel!
+    
+    @IBOutlet weak var player3Dialogue: UIImageView!
+    @IBOutlet weak var player3Message: UILabel!
+    
+    @IBOutlet weak var player4Dialogue: UIImageView!
+    @IBOutlet weak var player4Message: UILabel!
+    
+    
     @IBOutlet weak var wagerCard: UIImageView!
+    
     
     let player1 = Player(playerNum: 1)
     let deckObj = Deck()
@@ -78,6 +87,7 @@ class GameViewController: UIViewController {
     var atoutSelected = ""
     var tempUsername = ""
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,6 +103,18 @@ class GameViewController: UIViewController {
         player2Message.isHidden = true
         player2Dialogue.alpha = 0
         player2Message.alpha = 0
+        
+        player3Dialogue.image = UIImage(named: "dialogue.png")
+        player3Dialogue.isHidden = true
+        player3Message.isHidden = true
+        player3Dialogue.alpha = 0
+        player3Message.alpha = 0
+        
+        player4Dialogue.image = UIImage(named: "dialogue.png")
+        player4Dialogue.isHidden = true
+        player4Message.isHidden = true
+        player4Dialogue.alpha = 0
+        player4Message.alpha = 0
         
         player2username.isHidden = true
         player3username.isHidden = true
@@ -168,7 +190,7 @@ class GameViewController: UIViewController {
         socket = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
         socket.on("connect") {data, ack in
             self.socket.emit("addNewPlayer", ["id":self.uid, "username":self.tempUsername])
-            self.socket.emit("updatePlayers")
+            //self.socket.emit("updatePlayers")
             //check if seat is occupied by a player
             
         }
@@ -296,8 +318,55 @@ class GameViewController: UIViewController {
             let dictionary = data[0] as! [String:Any]
             self.player2Dialogue.isHidden = false
             self.player2Message.isHidden = false
-           // let id = dictionary["uid"] as! String
-             self.player2Message.text = (dictionary["message"] as! String)
+            let pNum = dictionary["num"] as! Int
+            for seat in self.totalSeatPlayers{
+                if seat.player.playerNum == pNum{
+                    if pNum == 2{
+                        self.player2Message.text = (dictionary["message"] as! String)
+                        UIView.animate(withDuration: 1.0, animations: {
+                            self.player2Message.alpha = 1.0
+                            self.player2Dialogue.alpha = 1.0
+                        })
+                        let when = DispatchTime.now() + 3 // number of seconds
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            // Your code with delay
+                            self.player2Message.alpha = 0
+                            self.player2Dialogue.alpha = 0
+                            self.player2Message.text = ""
+                            self.player2Dialogue.isHidden = true
+                        }
+                    }else if pNum == 3{
+                        self.player3Message.text = (dictionary["message"] as! String)
+                        UIView.animate(withDuration: 1.0, animations: {
+                            self.player3Message.alpha = 1.0
+                            self.player3Dialogue.alpha = 1.0
+                        })
+                        let when = DispatchTime.now() + 3 // number of seconds
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            // Your code with delay
+                            self.player3Message.alpha = 0
+                            self.player3Dialogue.alpha = 0
+                            self.player3Message.text = ""
+                            self.player3Dialogue.isHidden = true
+                        }
+                    }else if pNum == 4{
+                        self.player4Message.text = (dictionary["message"] as! String)
+                        UIView.animate(withDuration: 1.0, animations: {
+                            self.player4Message.alpha = 1.0
+                            self.player4Dialogue.alpha = 1.0
+                        })
+                        let when = DispatchTime.now() + 3 // number of seconds
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            // Your code with delay
+                            self.player4Message.alpha = 0
+                            self.player4Dialogue.alpha = 0
+                            self.player4Message.text = ""
+                            self.player4Dialogue.isHidden = true
+                        }
+                    }
+                }
+            }
+            self.player2Message.text = (dictionary["message"] as! String)
             UIView.animate(withDuration: 1.0, animations: {
                  self.player2Message.alpha = 1.0
                 self.player2Dialogue.alpha = 1.0
@@ -366,65 +435,131 @@ class GameViewController: UIViewController {
         socket.on("playerJoined") {data, ack in
             print(data)
             let dictionary = data[0] as! [String:Any]
-            let id = dictionary["id"] as! String
-           // let players = dictionary["players"] as! [Anyobject]
+            var tag = 0
+            //let id = dictionary["id"] as! String
+            var players = dictionary["players"] as! [AnyObject]
+            for x in 0...players.count-1{
+                let player = players[x] as! [String:Any]
+                if player["id"] as! String == self.seat1.player.uid{
+                    tag = player["playerNumber"] as! Int
+                    players.remove(at: x)
+                    
+                    break
+                }
+            }
             let tempUsername = dictionary["username"] as! String
-            for seat in self.totalSeatPlayers{
+            if players.count != 0{
                 
-                if seat.player.uid == id{
-                    //do nothing player already exists
-                }else{
+                
                     //add new player
-                    if self.totalSeatPlayers.count == 1{
-                        let player2 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:Any]
-                        player2.uid = d["id"] as! String
+                    if players.count >= 1{
+                        if tag == 3{
+                            let player = players[0] as! [String:Any]
+                            let player2 = Player(playerNum: player["playerNumber"] as! Int)
+                            //let d = data[0] as! [String:Any]
+                            player2.uid = player["id"] as! String
+                            self.seat3 = Seat()
+                            self.seat3.player = player2
+                            self.player3Image.image = UIImage(named: "avatar1.png")
+                            self.totalSeatPlayers.append(self.seat3)
+                            self.seat3.seatImage = self.playedCard3
+                            self.seat3.player.username = player["username"] as! String
+                            self.player3username.text = (player["username"] as! String)
+                            self.player3username.isHidden = false
+                        }else{
+                        let player = players[0] as! [String:Any]
+                        let player2 = Player(playerNum: player["playerNumber"] as! Int)
+                        //let d = data[0] as! [String:Any]
+                        player2.uid = player["id"] as! String
                         self.seat2 = Seat()
                         self.seat2.player = player2
                         self.player2Image.image = UIImage(named: "avatar1.png")
                         self.totalSeatPlayers.append(self.seat2)
                         self.seat2.seatImage = self.playedCard2
-                        self.seat2.player.username = tempUsername
-                        self.player2username.text = tempUsername
+                        self.seat2.player.username = player["username"] as! String
+                        self.player2username.text = (player["username"] as! String)
                         self.player2username.isHidden = false
-                        break
-                    }else if self.totalSeatPlayers.count == 2{
-                        let player3 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:Any]
-                        player3.uid = d["id"] as! String
-                        self.seat3 = Seat()
-                        self.seat3.player = player3
-                        self.seat3.seatImage = self.playedCard3
-                        self.player3Image.image = UIImage(named: "avatar2.png")
-                        self.totalSeatPlayers.append(self.seat3)
-                        self.seat3.player.username = tempUsername
-                        self.player3username.text = tempUsername
-                        self.player3username.isHidden = false
-                        break
-                    }else if self.totalSeatPlayers.count == 3{
-                        let player4 = Player(playerNum: self.totalSeatPlayers.count + 1)
-                        let d = data[0] as! [String:Any]
-                        player4.uid = d["id"] as! String
+                        }
+                    }
+                    if players.count >= 2{
+                         let player = players[1] as! [String:Any]
+                        
+                            if  tag == 2{
+                                let player4 = Player(playerNum: player["playerNumber"] as! Int)
+                                //let d = data[0] as! [String:Any]
+                                player4.uid = player["id"] as! String
+                                self.seat4 = Seat()
+                                self.seat4.player = player4
+                                self.seat4.seatImage = self.playedCard4
+                                self.player4Image.image = UIImage(named: "avatar3.png")
+                                self.totalSeatPlayers.append(self.seat4)
+                                self.seat4.player.username = player["username"] as! String
+                                self.player4username.text = (player["username"] as! String)
+                                self.player4username.isHidden = false
+                            }else if tag == 3{
+                                let currentPlayer = Player(playerNum: player["playerNumber"] as! Int)
+                                //let d = data[0] as! [String:Any]
+                                currentPlayer.uid = player["id"] as! String
+                                self.seat2 = Seat()
+                                self.seat2.player = currentPlayer
+                                self.player2Image.image = UIImage(named: "avatar1.png")
+                                self.totalSeatPlayers.append(self.seat2)
+                                self.seat2.seatImage = self.playedCard2
+                                self.seat2.player.username = player["username"] as! String
+                                self.player2username.text = (player["username"] as! String)
+                                self.player2username.isHidden = false
+                            }else{
+                                let player3 = Player(playerNum: player["playerNumber"] as! Int)
+                                //let d = data[0] as! [String:Any]
+                                player3.uid = player["id"] as! String
+                                self.seat3 = Seat()
+                                self.seat3.player = player3
+                                self.seat3.seatImage = self.playedCard3
+                                self.player3Image.image = UIImage(named: "avatar2.png")
+                                self.totalSeatPlayers.append(self.seat3)
+                                self.seat3.player.username = player["username"] as! String
+                                self.player3username.text = (player["username"] as! String)
+                                self.player3username.isHidden = false
+                            }
+                        
+                    }
+                    if players.count >= 3{
+                        let player = players[2] as! [String:Any]
+                        if tag == 2{
+                            let player4 = Player(playerNum: player["playerNumber"] as! Int)
+                            //let d = data[0] as! [String:Any]
+                            player4.uid = player["id"] as! String
+                            self.seat3 = Seat()
+                            self.seat3.player = player4
+                            self.seat3.seatImage = self.playedCard3
+                            self.player3Image.image = UIImage(named: "avatar3.png")
+                            self.totalSeatPlayers.append(self.seat3)
+                            self.seat3.player.username = player["username"] as! String
+                            self.player3username.text = (player["username"] as! String)
+                            self.player3username.isHidden = false
+
+                        }else{
+                        
+                        let player4 = Player(playerNum: player["playerNumber"] as! Int)
+                        //let d = data[0] as! [String:Any]
+                        player4.uid = player["id"] as! String
                         self.seat4 = Seat()
                         self.seat4.player = player4
                         self.seat4.seatImage = self.playedCard4
                         self.player4Image.image = UIImage(named: "avatar3.png")
                         self.totalSeatPlayers.append(self.seat4)
-                        self.seat4.player.username = tempUsername
-                        self.player4username.text = tempUsername
+                        self.seat4.player.username = player["username"] as! String
+                        self.player4username.text = (player["username"] as! String)
                         self.player4username.isHidden = false
-                        break
+                        }
                     }
-                }
+                
             }
-            
             
             self.newGameBtn.isHidden = false
             if self.totalSeatPlayers.count > 1{
                 self.talkBtn.isHidden = false
             }
-            
-
         }
         
         socket.on("cardsDealt"){data, ack in
@@ -782,18 +917,31 @@ class GameViewController: UIViewController {
         socket.on("roundResult"){data, ack in
             print("Winner player is: \(data)")
             let result = data[0] as! [String:Any]
-            let score = result["score"] as! Int
             let winnerID = result["winnerID"] as! String
-            for seat in self.totalSeatPlayers{
-                if winnerID == seat.player.uid{
-                    self.waitingLabel.text = "Player " + String(seat.player.playerNum) + " wins!"
-                    if seat.player.playerNum == 1 || seat.player.playerNum == 3{
-                        self.team1Score.text = "Team 1: " + String(score)
-                    }else{
-                        self.team2Score.text = "Team 2: " + String(score)
-                    }
-                }
+            let teamMateID = result["teamMateID"] as! String
+            let score = result["score"] as! Int
+            
+            if self.seat1.player.uid == winnerID || self.seat1.player.uid == teamMateID{
+                self.team1Score.text = "Team 1: " + String(score)
+            }else{
+                self.team2Score.text = "Team 2: " + String(score)
             }
+
+            
+            
+            
+            //            let score = result["score"] as! Int
+            //            let winnerID = result["winnerID"] as! String
+            //            for seat in self.totalSeatPlayers{
+            //                if winnerID == seat.player.uid{
+            //                    self.waitingLabel.text = "Player " + String(seat.player.playerNum) + " wins!"
+            //                    if seat.player.playerNum == 1 || seat.player.playerNum == 3{
+            //                        self.team1Score.text = "Team 1: " + String(score)
+            //                    }else{
+            //                        self.team2Score.text = "Team 2: " + String(score)
+            //                    }
+            //                }
+            //            }
         }
         
         socket.on("clearWageCard"){ data, ack in
