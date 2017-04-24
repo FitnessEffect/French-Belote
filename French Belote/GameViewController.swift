@@ -58,6 +58,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var player4Dialogue: UIImageView!
     @IBOutlet weak var player4Message: UILabel!
     
+    @IBOutlet weak var tableTopOutlet: UIImageView!
     
     @IBOutlet weak var wagerCard: UIImageView!
     
@@ -90,6 +91,36 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        waitingLabel.layer.borderWidth = 1.0
+        waitingLabel.layer.cornerRadius = 8
+        waitingLabel.backgroundColor = UIColor.yellow
+        waitingLabel.layer.masksToBounds = true
+        
+        clubBtnOutlet.layer.borderWidth = 1.0
+        clubBtnOutlet.layer.cornerRadius = 8
+        clubBtnOutlet.backgroundColor = UIColor.white
+        clubBtnOutlet.layer.masksToBounds = true
+        
+        diamondBtnOutlet.layer.borderWidth = 1.0
+        diamondBtnOutlet.layer.cornerRadius = 8
+        diamondBtnOutlet.backgroundColor = UIColor.white
+        diamondBtnOutlet.layer.masksToBounds = true
+        
+        spadeBtnOutlet.layer.borderWidth = 1.0
+        spadeBtnOutlet.layer.cornerRadius = 8
+        spadeBtnOutlet.backgroundColor = UIColor.white
+        spadeBtnOutlet.layer.masksToBounds = true
+        
+        heartBtnOutlet.layer.borderWidth = 1.0
+        heartBtnOutlet.layer.cornerRadius = 8
+        heartBtnOutlet.backgroundColor = UIColor.white
+        heartBtnOutlet.layer.masksToBounds = true
+        
+        pass.layer.borderWidth = 1.0
+        pass.layer.cornerRadius = 8
+        pass.backgroundColor = UIColor.white
+        pass.layer.masksToBounds = true
         
         newGameBtn.layer.cornerRadius = 10.0
         newGameBtn.clipsToBounds = true
@@ -563,7 +594,6 @@ class GameViewController: UIViewController {
         }
         
         socket.on("cardsDealt"){data, ack in
-    
             self.newGameBtn.isHidden = true
             
             self.cardImageArray = [self.card1, self.card2, self.card3, self.card4, self.card5, self.card6, self.card7, self.card8]
@@ -599,9 +629,11 @@ class GameViewController: UIViewController {
                     self.cardImageArray[6].image = UIImage(named:"back")
                     self.cardImageArray[7].image = UIImage(named:"back")
                     
+                    self.tableTopOutlet.isHidden = true
                     var maxCards = 5
                     if self.atoutSelected != ""{
                         maxCards = 8
+                        self.tableTopOutlet.isHidden = false
                     }else{
                         self.wagerCard.isHidden = false
                     }
