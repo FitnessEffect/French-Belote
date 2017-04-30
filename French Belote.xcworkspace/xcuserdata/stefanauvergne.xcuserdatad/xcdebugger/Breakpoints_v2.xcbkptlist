@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "French Belote/GameViewController.swift"
-            timestampString = "514823356.015879"
+            timestampString = "515275641.796524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1146"
-            endingLineNumber = "1146"
+            startingLineNumber = "1152"
+            endingLineNumber = "1152"
             landmarkName = "logoutBtn(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "French Belote/GameViewController.swift"
-            timestampString = "514823356.015879"
+            timestampString = "515275641.796524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "835"
-            endingLineNumber = "835"
+            startingLineNumber = "841"
+            endingLineNumber = "841"
             landmarkName = "openSocket()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "French Belote/GameViewController.swift"
-            timestampString = "514823356.015879"
+            timestampString = "515275641.796524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1092"
-            endingLineNumber = "1092"
+            startingLineNumber = "1098"
+            endingLineNumber = "1098"
             landmarkName = "cardImageTapped(sender:)"
             landmarkType = "7">
          </BreakpointContent>

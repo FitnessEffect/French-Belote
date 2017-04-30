@@ -811,6 +811,12 @@ class GameViewController: UIViewController {
                 self.spadeBtnOutlet.isHidden = false
                 self.pass.isHidden = false
                 self.waitingLabel.text = "Select Suit!"
+            }else{
+                for index in 0...self.totalSeatPlayers.count-1{
+                    if self.totalSeatPlayers[index].player.uid == data[0] as! String{
+                        self.waitingLabel.text = "Waiting for player " + String(index + 1)
+                    }
+                }
             }
         }
         
