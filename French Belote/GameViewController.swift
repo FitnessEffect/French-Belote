@@ -449,17 +449,25 @@ class GameViewController: UIViewController {
             let id = dictionary["uid"] as! String
             for index in 0...self.totalSeatPlayers.count-1{
                 if self.totalSeatPlayers[index].player.uid == id {
-                    
+                    if  index == 0{
                     self.totalSeatPlayers.remove(at: index)
+                        break
+                    }
                     if index == 1{
                         self.player2Image.image = nil
                         self.playedCard2.image = nil
+                        self.player2username.text = ""
+                        break
                     }else if index == 2{
                         self.player3Image.image = nil
                         self.playedCard3.image = nil
+                        self.player3username.text = ""
+                        break
                     }else if index == 3{
                         self.player4Image.image = nil
                         self.playedCard4.image = nil
+                        self.player4username.text = ""
+                        break
                     }
                 }
             }
