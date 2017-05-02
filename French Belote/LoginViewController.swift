@@ -67,7 +67,7 @@ class LoginViewController: UIViewController {
             prefs.set(passwordTF.text, forKey:"password")
             prefs.set(rememberMeSwitch.isOn, forKey:"switch")
             FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:{(success) in
-                self.performSegue(withIdentifier: "segueGame", sender: self)
+                self.performSegue(withIdentifier: "segueRooms", sender: self)
             })
         }
         
@@ -121,8 +121,11 @@ class LoginViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let gameVC:GameViewController = segue.destination as! GameViewController
-        gameVC.setUsername(username: usernameTF.text!)
+        
+        let roomsVC:RoomsViewController = segue.destination as! RoomsViewController
+        roomsVC.setUsername(username: usernameTF.text!)
+        
+
         
     }
 
