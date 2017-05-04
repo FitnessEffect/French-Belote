@@ -14,13 +14,25 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
     @IBOutlet weak var usernameTF: UITextField!
-    
     @IBOutlet weak var rememberMeSwitch: UISwitch!
+    @IBOutlet weak var login: UIButton!
+    @IBOutlet weak var register: UIButton!
 
     let prefs = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        login.layer.cornerRadius = 10.0
+        login.clipsToBounds = true
+        login.layer.borderWidth = 1
+        login.layer.borderColor = UIColor.black.cgColor
+        
+        register.layer.cornerRadius = 10.0
+        register.clipsToBounds = true
+        register.layer.borderWidth = 1
+        register.layer.borderColor = UIColor.black.cgColor
+        
         FIRAuth.auth()?.addStateDidChangeListener({auth, user in
             //check if remember me is true
             if self.prefs.object(forKey: "switch") as? Bool == true{

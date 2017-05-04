@@ -156,18 +156,9 @@ class GameViewController: UIViewController {
         player3username.isHidden = true
         player4username.isHidden = true
         
-        uid = FIRAuth.auth()?.currentUser?.uid
+        //uid = FIRAuth.auth()?.currentUser?.uid
         openSocket()
         //pingServer()
-        
-        
-        seat1 = Seat()
-        seat1.player = Player(playerNum: 1)
-        seat1.player.uid = uid
-        seat1.seatImage = playedCard1
-        
-        
-        totalSeatPlayers.append(seat1)
         
         newGameBtn.isHidden = true
         
@@ -180,6 +171,15 @@ class GameViewController: UIViewController {
         clubBtnOutlet.isHidden = true
         spadeBtnOutlet.isHidden = true
         pass.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        seat1 = Seat()
+        seat1.player = Player(playerNum: 1)
+        seat1.player.uid = uid
+        seat1.seatImage = playedCard1
+        totalSeatPlayers.append(seat1)
+        print("here")
     }
     
     override func didReceiveMemoryWarning() {
@@ -457,16 +457,19 @@ class GameViewController: UIViewController {
                         self.player2Image.image = nil
                         self.playedCard2.image = nil
                         self.player2username.text = ""
+                        self.totalSeatPlayers.remove(at: index)
                         break
                     }else if index == 2{
                         self.player3Image.image = nil
                         self.playedCard3.image = nil
                         self.player3username.text = ""
+                        self.totalSeatPlayers.remove(at: index)
                         break
                     }else if index == 3{
                         self.player4Image.image = nil
                         self.playedCard4.image = nil
                         self.player4username.text = ""
+                        self.totalSeatPlayers.remove(at: index)
                         break
                     }
                 }
@@ -1032,6 +1035,10 @@ class GameViewController: UIViewController {
     
     func setRoomId(roomID:String){
         currentRoomId = roomID
+    }
+    
+    func setUserID(userID:String){
+        uid = userID
     }
     
     func pingServer(){
