@@ -179,7 +179,6 @@ class GameViewController: UIViewController {
         seat1.player.uid = uid
         seat1.seatImage = playedCard1
         totalSeatPlayers.append(seat1)
-        print("here")
     }
     
     override func didReceiveMemoryWarning() {
@@ -474,6 +473,10 @@ class GameViewController: UIViewController {
                     }
                 }
             }
+            
+            if self.totalSeatPlayers.count == 1{
+                self.newGameBtn.isHidden = true
+            }
         }
        
         
@@ -602,8 +605,9 @@ class GameViewController: UIViewController {
                 
             }
             
-            self.newGameBtn.isHidden = false
+            
             if self.totalSeatPlayers.count > 1{
+                self.newGameBtn.isHidden = false
                 self.talkBtn.isHidden = false
             }
         }
