@@ -20,6 +20,8 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var listOfPlayersInEachRoom = [Int]()
     var uid:String!
     
+     let prefs = UserDefaults.standard
+    
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(RoomsViewController.handleRefresh(_:)), for: UIControlEvents.valueChanged)
@@ -27,17 +29,34 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return refreshControl
     }()
     
+    @IBOutlet weak var createRoomBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var roomNameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createRoomBtn.layer.cornerRadius = 10.0
+        createRoomBtn.clipsToBounds = true
+        createRoomBtn.layer.borderWidth = 1
+        createRoomBtn.layer.borderColor = UIColor.darkGray.cgColor
+        
         self.tableView.addSubview(self.refreshControl)
 
-        // Do any additional setup after loading the view.
+        // save user ID
         uid = FIRAuth.auth()?.currentUser?.uid
+        prefs.set(uid, forKey: "userID")
+        prefs.set(usernamePassed, forKey: "username")
           openSocket()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let temp = self.prefs.object(forKey: "userID") as? String{
+            self.uid = temp
+        }
+        if let temp = self.prefs.object(forKey: "username") as? String{
+            self.usernamePassed = temp
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,13 +78,26 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         usernamePassed = username
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+            let x = indexPath.row
+            listOfPlayersInEachRoom.remove(at: x)
+            listOfNameRooms.remove(at: x)
+            listOfIdRooms.remove(at: x)
+            socket2.emit("removeRoom", ["roomID":listOfIdRooms[x]])
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfIdRooms.count // your number of cell here
     }
     
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         // create a new cell if needed or reuse an old one
         let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "roomCell") as UITableViewCell!
         let x = indexPath.row
@@ -77,7 +109,7 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func openSocket(){
         socket2 = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
         socket2.on("connect") {data, ack in
-            
+            //do nothing
         }
         
         socket2.on("allRooms"){data, ack in
@@ -115,6 +147,8 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         gameVC.setUsername(username: usernamePassed)
         //pass roomID to GameViewController
         gameVC.setRoomId(roomID: listOfIdRooms[x!])
+        //pass userID to GameViewController
+        gameVC.setUserID(userID: uid)
     }
  
 }
