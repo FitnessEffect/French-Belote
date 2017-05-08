@@ -19,9 +19,5 @@ class Seat: UIImageView {
         // Drawing code
     }
     */
-    
-    deinit{
-        print("DEinitialized")
-    }
 
 }
