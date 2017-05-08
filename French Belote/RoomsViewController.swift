@@ -64,14 +64,6 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-    func printObjects(){
-        for x in 0...listOfIdRooms.count-1{
-        print(listOfIdRooms[x])
-        print(listOfNameRooms[x])
-        print(listOfPlayersInEachRoom[x])
-        }
-    }
-    
     func handleRefresh(_ refreshControl: UIRefreshControl) {
         socket2.emit("refreshTableView")
         refreshControl.endRefreshing()
@@ -151,7 +143,6 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Pass the selected object to the new view controller.
         let x = tableView.indexPathForSelectedRow?.row
         let gameVC:GameViewController = segue.destination as! GameViewController
-        printObjects()
         //pass username to GameViewController
         gameVC.setUsername(username: usernamePassed)
         //pass roomID to GameViewController

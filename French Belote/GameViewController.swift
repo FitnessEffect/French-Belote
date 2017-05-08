@@ -81,10 +81,10 @@ class GameViewController: UIViewController {
     var shuffledDeck = [Card]()
     var socket:SocketIOClient!
     var uid:String!
-    var seat1:Seat?
-    var seat2:Seat?
-    var seat3:Seat?
-    var seat4:Seat?
+    var seat1:Seat!
+    var seat2:Seat!
+    var seat3:Seat!
+    var seat4:Seat!
     var dictionaryScore = [String:Any]()
     var totalSeatPlayers = [Seat]()
     var scoreTeam1:Int!
@@ -175,9 +175,9 @@ class GameViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         seat1 = Seat()
-        seat1?.player = Player(playerNum: 1)
-        seat1?.player.uid = uid
-        seat1?.seatImage = playedCard1
+        seat1.player = Player(playerNum: 1)
+        seat1.player.uid = uid
+        seat1.seatImage = playedCard1
         totalSeatPlayers.append(seat1!)
         print("here")
     }
@@ -202,7 +202,7 @@ class GameViewController: UIViewController {
             
         }else if sender.titleLabel?.text == "☞"{
             atoutSelected = "pass"
-            socket.emit("setAtout", ["atout":"pass", "uid":seat1?.player.uid, "roomID":currentRoomId])
+            socket.emit("setAtout", ["atout":"pass", "uid":seat1.player.uid, "roomID":currentRoomId])
             heartBtnOutlet.isHidden = true
             diamondBtnOutlet.isHidden = true
             clubBtnOutlet.isHidden = true
@@ -212,7 +212,7 @@ class GameViewController: UIViewController {
         }
         
         wagerCard.isHidden = true
-        socket.emit("setAtout", ["atout":atoutSelected, "id":seat1?.player.uid, "roomID":currentRoomId])
+        socket.emit("setAtout", ["atout":atoutSelected, "id":seat1.player.uid, "roomID":currentRoomId])
         if atoutSelected != "pass"{
             self.waitingLabel.text = "Pick your card!"
         }
@@ -456,9 +456,7 @@ class GameViewController: UIViewController {
             }
             
             if  selectedIndex == 0{
-                self.seat1?.player = nil
-                self.totalSeatPlayers.remove(at: selectedIndex)
-                self.seat1 = nil
+                return
             }
             if selectedIndex == 1{
                 self.player2Image.image = nil
@@ -820,7 +818,7 @@ class GameViewController: UIViewController {
         }
         
         socket.on("selectAtout"){data, ack in
-            if self.seat1?.player.uid == data[0] as! String{
+            if self.seat1.player.uid == data[0] as! String{
                 // self.waitingLabel.isHidden = true
                 self.heartBtnOutlet.isHidden = false
                 self.diamondBtnOutlet.isHidden = false
@@ -1122,10 +1120,10 @@ class GameViewController: UIViewController {
                 if seat1?.player.cardsInHand.count == 1{
                     //send player card value
                     if seat1?.player.cardsInHand[tag].suit.rawValue == atoutSelected{
-                        socket.emit("cardPlayed", ["id":uid,"rank":seat1?.player.cardsInHand[tag].rank.rawValue, "suit":seat1?.player.cardsInHand[tag].suit.rawValue, "value":seat1?.player.cardsInHand[tag].rank.cardsValueAtout(), "lastCard":1, "roomID":currentRoomId])
+                        socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueAtout(), "lastCard":1, "roomID":currentRoomId])
                         //  waitingLabel.isHidden = false
                     }else{
-                        socket.emit("cardPlayed", ["id":uid,"rank":seat1?.player.cardsInHand[tag].rank.rawValue, "suit":seat1?.player.cardsInHand[tag].suit.rawValue, "value":seat1?.player.cardsInHand[tag].rank.cardsValueNonAtout(), "lastCard":1, "roomID":currentRoomId])
+                        socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueNonAtout(), "lastCard":1, "roomID":currentRoomId])
                         // waitingLabel.isHidden = false
                     }
                     
@@ -1133,10 +1131,10 @@ class GameViewController: UIViewController {
                     
                     //send player card value
                     if seat1?.player.cardsInHand[tag].suit.rawValue == atoutSelected{
-                        socket.emit("cardPlayed", ["id":uid,"rank":seat1?.player.cardsInHand[tag].rank.rawValue, "suit":seat1?.player.cardsInHand[tag].suit.rawValue, "value":seat1?.player.cardsInHand[tag].rank.cardsValueAtout(), "lastCard":0, "roomID":currentRoomId])
+                        socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueAtout(), "lastCard":0, "roomID":currentRoomId])
                         //  waitingLabel.isHidden = false
                     }else{
-                        socket.emit("cardPlayed", ["id":uid,"rank":seat1?.player.cardsInHand[tag].rank.rawValue, "suit":seat1?.player.cardsInHand[tag].suit.rawValue, "value":seat1?.player.cardsInHand[tag].rank.cardsValueNonAtout(), "lastCard":0, "roomID":currentRoomId])
+                        socket.emit("cardPlayed", ["id":uid,"rank":seat1.player.cardsInHand[tag].rank.rawValue, "suit":seat1.player.cardsInHand[tag].suit.rawValue, "value":seat1.player.cardsInHand[tag].rank.cardsValueNonAtout(), "lastCard":0, "roomID":currentRoomId])
                         // waitingLabel.isHidden = false
                     }
                 }
@@ -1165,11 +1163,11 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func nudgeBtn(_ sender: UIButton) {
-        socket.emit("nudge", ["uid":seat1?.player.uid, "message":"Hurry up!", "roomID":currentRoomId])
+        socket.emit("nudge", ["uid":seat1.player.uid, "message":"Hurry up!", "roomID":currentRoomId])
     }
     
     @IBAction func newGameBtn(_ sender: UIButton) {
-        socket.emit("startGame", ["uid":seat1?.player.uid, "roomID":currentRoomId])
+        socket.emit("startGame", ["uid":seat1.player.uid, "roomID":currentRoomId])
     }
     
     
