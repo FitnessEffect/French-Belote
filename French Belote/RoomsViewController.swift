@@ -35,7 +35,7 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         createRoomBtn.layer.cornerRadius = 10.0
         createRoomBtn.clipsToBounds = true
         createRoomBtn.layer.borderWidth = 1
@@ -134,6 +134,7 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         socket2.connect()
     }
+
     
     // MARK: - Navigation
 

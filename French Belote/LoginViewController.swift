@@ -18,11 +18,16 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var login: UIButton!
     @IBOutlet weak var register: UIButton!
 
+    @IBOutlet weak var segmentedOutlet: UISegmentedControl!
+    
     let prefs = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        
+        register.isHidden = true
         login.layer.cornerRadius = 10.0
         login.clipsToBounds = true
         login.layer.borderWidth = 1
@@ -55,6 +60,55 @@ class LoginViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func dismissKeyboard(){
+        usernameTF.resignFirstResponder()
+        passwordTF.resignFirstResponder()
+        emailTF.resignFirstResponder()
+    }
+    
+    func keyboardWasShown(notification: NSNotification){
+        //let info: NSDictionary  = notification.userInfo! as NSDictionary
+        //let keyboardSize = (info.value(forKey: UIKeyboardFrameEndUserInfoKey) as AnyObject).cgRectValue.size
+        //let contentInsets:UIEdgeInsets  = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0)
+        //scrollView.contentInset = contentInsets
+        //scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification){
+        //Once keyboard disappears, restore original positions
+//        var info = notification.userInfo!
+//        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+//        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+//        self.scrollView.contentInset = contentInsets
+//        self.scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+    }
+    
+    func registerForKeyboardNotifications(){
+        //Adding notifies on keyboard appearing
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications(){
+        //Removing notifies on keyboard appearing
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @IBAction func segmentedAction(_ sender: UISegmentedControl) {
+        //Register btn
+        if segmentedOutlet.selectedSegmentIndex == 1{
+            usernameTF.isHidden = true
+            login.isHidden = true
+            register.isHidden = false
+        }
+        if segmentedOutlet.selectedSegmentIndex == 0{
+            usernameTF.isHidden = false
+            register.isHidden = true
+            login.isHidden = false
+        }
     }
     
     @IBAction func login(_ sender: UIButton) {

@@ -1011,7 +1011,15 @@ class GameViewController: UIViewController {
                     self.team2RoundPoints.text =  String(roundCount)
                 }
             }
+            
+           // self.socket.emit("startNewGameWithNextPlayer", ["roomID":self.currentRoomId])
         }
+        
+//        socket.on("followingStartPlayerId"){ data, ack in
+//            let temp = data[0] as! [String:Any]
+//            let tempId = temp["id"] as! String
+//             self.socket.emit("startGame", ["uid":tempId, "roomID":self.currentRoomId])
+//        }
         
         socket.on("clearWageCard"){ data, ack in
             self.wagerCard.isHidden = true

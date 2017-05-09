@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "French Belote/GameViewController.swift"
-            timestampString = "515941931.519818"
+            timestampString = "516033122.059447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1174"
-            endingLineNumber = "1174"
+            startingLineNumber = "1182"
+            endingLineNumber = "1182"
             landmarkName = "logoutBtn(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "French Belote/GameViewController.swift"
-            timestampString = "515941931.519818"
+            timestampString = "516033122.059447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1120"
-            endingLineNumber = "1120"
+            startingLineNumber = "1128"
+            endingLineNumber = "1128"
             landmarkName = "cardImageTapped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
