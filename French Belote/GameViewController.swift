@@ -63,7 +63,6 @@ class GameViewController: UIViewController {
     @IBOutlet weak var player4Message: UILabel!
     
     @IBOutlet weak var tableTopOutlet: UIImageView!
-    
     @IBOutlet weak var wagerCard: UIImageView!
     
     
@@ -171,6 +170,8 @@ class GameViewController: UIViewController {
         clubBtnOutlet.isHidden = true
         spadeBtnOutlet.isHidden = true
         pass.isHidden = true
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -186,6 +187,7 @@ class GameViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     @IBAction func selectAtoutBtns(_ sender: UIButton) {
         if sender.titleLabel?.text == "♥️"{
@@ -228,7 +230,6 @@ class GameViewController: UIViewController {
         socket.on("connect") {data, ack in
            self.socket.emit("addNewPlayer", ["id":self.uid, "username":self.tempUsername, "roomID":self.currentRoomId])
         }
-        
         
         socket.on("showCard"){ data, ack in
             print(data)

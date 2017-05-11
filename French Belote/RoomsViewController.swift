@@ -47,7 +47,7 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         uid = FIRAuth.auth()?.currentUser?.uid
         prefs.set(uid, forKey: "userID")
         prefs.set(usernamePassed, forKey: "username")
-          openSocket()
+        openSocket()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -135,11 +135,22 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         socket2.connect()
     }
 
+    @IBAction func logout(_ sender: UIButton) {
+        do{
+            try FIRAuth.auth()?.signOut()
+            self.dismiss(animated: true, completion: nil)
+            
+        }catch{
+            print(error)
+        }
+
+    }
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         let x = tableView.indexPathForSelectedRow?.row
@@ -148,8 +159,14 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         gameVC.setUsername(username: usernamePassed)
         //pass roomID to GameViewController
         gameVC.setRoomId(roomID: listOfIdRooms[x!])
+        
         //pass userID to GameViewController
         gameVC.setUserID(userID: uid)
+        
+        //pass info to app delegate
+        let appDelegateAccess = UIApplication.shared.delegate as! AppDelegate
+        appDelegateAccess.roomID = listOfIdRooms[x!]
+        appDelegateAccess.userID = uid
     }
  
 }
