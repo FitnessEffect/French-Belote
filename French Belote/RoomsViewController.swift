@@ -108,9 +108,9 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func openSocket(){
         socket2 = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
-        socket2.on("connect") {data, ack in
-            //do nothing
-        }
+//        socket2.on("connect") {data, ack in
+//            //do nothing
+//        }
         
         socket2.on("allRooms"){data, ack in
             print(data[0])

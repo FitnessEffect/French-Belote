@@ -47,25 +47,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
-    func openSocket(){
-        socket3 = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
-//        socket3.on("connect") {data, ack in
-//            print("User logged out")
-//            
-//        }
-        
-        self.socket3.emit("playerLeft", ["uid":self.userID, "roomID":self.roomID])
-        
-    }
-    
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        //        let storyboard = UIStoryboard(name:"Main", bundle:nil)
-        //        let gameVC = storyboard.instantiateViewController(withIdentifier: "gameVC") as! GameViewController
-        //        let uid = gameVC.seat1.player.uid
-        //
-        openSocket()
-        
+
+        self.socket3.emit("playerLeft", ["uid":self.userID, "roomID":self.roomID])
         do{
             try FIRAuth.auth()?.signOut()
             
