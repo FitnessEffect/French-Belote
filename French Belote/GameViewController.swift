@@ -171,7 +171,7 @@ class GameViewController: UIViewController {
         spadeBtnOutlet.isHidden = true
         pass.isHidden = true
         
-        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -227,6 +227,8 @@ class GameViewController: UIViewController {
     
     func openSocket(){
         socket = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.socket3 = socket
         socket.on("connect") {data, ack in
            self.socket.emit("addNewPlayer", ["id":self.uid, "username":self.tempUsername, "roomID":self.currentRoomId])
         }
@@ -449,31 +451,42 @@ class GameViewController: UIViewController {
             let dictionary = data[0] as! [String:Any]
             let id = dictionary["uid"] as! String
             var selectedIndex: Int!
+            
             for index in 0...self.totalSeatPlayers.count-1{
-                
                 if self.totalSeatPlayers[index].player.uid == id {
                     selectedIndex = index
                 }
             }
             
-            if  selectedIndex == 0{
+            if id == self.seat1.player.uid{
                 return
             }
-            if selectedIndex == 1{
-                self.player2Image.image = nil
-                self.playedCard2.image = nil
-                self.player2username.text = ""
-                self.totalSeatPlayers.remove(at: selectedIndex)
-            }else if selectedIndex == 2{
-                self.player3Image.image = nil
-                self.playedCard3.image = nil
-                self.player3username.text = ""
-                self.totalSeatPlayers.remove(at: selectedIndex)
-            }else if selectedIndex == 3{
-                self.player4Image.image = nil
-                self.playedCard4.image = nil
-                self.player4username.text = ""
-                self.totalSeatPlayers.remove(at: selectedIndex)
+            
+            if self.totalSeatPlayers.count > 1{
+                if id == self.seat2.player.uid{
+                    self.player2Image.image = nil
+                    self.playedCard2.image = nil
+                    self.player2username.text = ""
+                    self.totalSeatPlayers.remove(at: selectedIndex)
+                }
+            }
+            
+            if self.totalSeatPlayers.count > 2{
+                if id == self.seat3.player.uid{
+                    self.player3Image.image = nil
+                    self.playedCard3.image = nil
+                    self.player3username.text = ""
+                    self.totalSeatPlayers.remove(at: selectedIndex)
+                }
+            }
+            
+            if self.totalSeatPlayers.count > 3{
+                if id == self.seat4.player.uid{
+                    self.player4Image.image = nil
+                    self.playedCard4.image = nil
+                    self.player4username.text = ""
+                    self.totalSeatPlayers.remove(at: selectedIndex)
+                }
             }
             
             if self.totalSeatPlayers.count == 1{
@@ -484,13 +497,15 @@ class GameViewController: UIViewController {
 
         
         socket.on("playerJoined") {data, ack in
-            print(data)
             let dictionary = data[0] as! [String:Any]
             var tag = 0
             //let id = dictionary["id"] as! String
             //let roomID = dictionary["roomId"] as! String
             //self.currentRoomId = roomID
             var players = dictionary["players"] as! [AnyObject]
+            print("CHECK")
+            print(players.count)
+            print(players)
             for x in 0...players.count-1{
                 let player = players[x] as! [String:Any]
                 let tempID = player["id"] as! String
@@ -1191,3 +1206,4 @@ class GameViewController: UIViewController {
         }
     }
 }
+
