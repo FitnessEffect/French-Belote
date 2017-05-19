@@ -51,8 +51,10 @@ class LoginViewController: UIViewController {
                     if let temp = self.prefs.object(forKey: "switch") as? Bool{
                         self.rememberMeSwitch.isOn = temp
                     }
+                   
                 }
             }
+             self.performSegue(withIdentifier: "segueRooms", sender: self)
         })
         // Do any additional setup after loading the view.
     }
@@ -133,7 +135,7 @@ class LoginViewController: UIViewController {
             prefs.set(passwordTF.text, forKey:"password")
             prefs.set(rememberMeSwitch.isOn, forKey:"switch")
             FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:{(success) in
-                self.performSegue(withIdentifier: "segueRooms", sender: self)
+                
             })
         }
         
