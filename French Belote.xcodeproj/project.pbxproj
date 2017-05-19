@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DAB5BF0B58DE005C387AC1E /* Pods_French_Belote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7C021BAB46DB6771C2C253 /* Pods_French_Belote.framework */; };
+		5205BB861EC7A07B00B53140 /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5205BB851EC7A07B00B53140 /* SocketIOManager.swift */; };
 		5209D1A21DF4C59C00042CCD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1A11DF4C59C00042CCD /* AppDelegate.swift */; };
 		5209D1A41DF4C59C00042CCD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5209D1A31DF4C59C00042CCD /* GameViewController.swift */; };
 		5209D1A71DF4C59C00042CCD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5209D1A51DF4C59C00042CCD /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		0A657197FEFB54781FB9F577 /* Pods-French Belote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-French Belote.release.xcconfig"; path = "Pods/Target Support Files/Pods-French Belote/Pods-French Belote.release.xcconfig"; sourceTree = "<group>"; };
 		34922E7344AB7B62D0183472 /* Pods-French Belote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-French Belote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-French Belote/Pods-French Belote.debug.xcconfig"; sourceTree = "<group>"; };
+		5205BB851EC7A07B00B53140 /* SocketIOManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		5209D19E1DF4C59C00042CCD /* French Belote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "French Belote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5209D1A11DF4C59C00042CCD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5209D1A31DF4C59C00042CCD /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				5209D1A11DF4C59C00042CCD /* AppDelegate.swift */,
 				52BC01FA1DF7091B00223BD6 /* CardView.swift */,
 				5209D1A31DF4C59C00042CCD /* GameViewController.swift */,
+				5205BB851EC7A07B00B53140 /* SocketIOManager.swift */,
 				523C148E1E7B61460052AAC3 /* Seat.swift */,
 				5209D1B71DF4D52100042CCD /* Player.swift */,
 				5209D1B31DF4C5B600042CCD /* Card.swift */,
@@ -259,6 +262,7 @@
 				5209D1B41DF4C5B600042CCD /* Card.swift in Sources */,
 				52FDD52E1EB695CD00DC408A /* RoomsViewController.swift in Sources */,
 				5209D1B81DF4D52100042CCD /* Player.swift in Sources */,
+				5205BB861EC7A07B00B53140 /* SocketIOManager.swift in Sources */,
 				523C148F1E7B61460052AAC3 /* Seat.swift in Sources */,
 				52BC01FB1DF7091B00223BD6 /* CardView.swift in Sources */,
 				5209D1A21DF4C59C00042CCD /* AppDelegate.swift in Sources */,

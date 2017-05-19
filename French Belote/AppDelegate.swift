@@ -51,13 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         self.socket3.emit("playerLeft", ["uid":self.userID, "roomID":self.roomID])
+        
         do{
             try FIRAuth.auth()?.signOut()
-            
         }catch{
             print(error)
         }
-
+        
 
     }
     //if remember is false {
