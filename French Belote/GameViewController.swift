@@ -226,7 +226,7 @@ class GameViewController: UIViewController {
     }
     
     func openSocket(){
-        socket = SocketIOClient(socketURL: URL(string: "http://fitchal.website")!, config: [.log(true), .forcePolling(true)])
+        socket = SocketIOClient(socketURL: URL(string: "http://104.236.21.144:3000")!, config: [.log(true), .forcePolling(true)])
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.socket3 = socket
         socket.on("connect") {data, ack in
