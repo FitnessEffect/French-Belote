@@ -10,7 +10,6 @@ import UIKit
 import SocketIO
 import FirebaseAuth
 
-
 class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var usernamePassed = ""
@@ -86,10 +85,11 @@ class RoomsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             // handle delete (by removing the data from your array and updating the tableview)
             let x = indexPath.row
+             socket2.emit("removeRoom", ["roomID":listOfIdRooms[x]])
             listOfPlayersInEachRoom.remove(at: x)
             listOfNameRooms.remove(at: x)
             listOfIdRooms.remove(at: x)
-            socket2.emit("removeRoom", ["roomID":listOfIdRooms[x]])
+           
         }
     }
     

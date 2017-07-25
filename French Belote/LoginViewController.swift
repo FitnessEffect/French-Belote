@@ -21,6 +21,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var segmentedOutlet: UISegmentedControl!
     
     let prefs = UserDefaults.standard
+    var authHandle:UInt?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,30 +43,79 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         register.layer.borderWidth = 1
         register.layer.borderColor = UIColor.black.cgColor
         
-        FIRAuth.auth()?.addStateDidChangeListener({auth, user in
+        if self.prefs.object(forKey: "switch") as? Bool == true{
+            rememberMeSwitch.setOn(true, animated: true)
+            setAuthListener()
+        }
+        else {
+            rememberMeSwitch.setOn(false, animated: true)
+        }
+//        FIRAuth.auth()?.addStateDidChangeListener({auth, user in
             //check if remember me is true
-            if self.prefs.object(forKey: "switch") as? Bool == true{
-                if user != nil{
-                    if let temp = self.prefs.object(forKey: "email") as? String{
-                        self.emailTF.text = temp
-                    }
-                    if let temp = self.prefs.object(forKey: "password") as? String{
-                        self.passwordTF.text = temp
-                    }
-                    if let temp = self.prefs.object(forKey: "switch") as? Bool{
-                        self.rememberMeSwitch.isOn = temp
-                    }
-                   
-                }
-            }
-             self.performSegue(withIdentifier: "segueRooms", sender: self)
-        })
+//            if self.prefs.object(forKey: "switch") as? Bool == true{
+//                if user != nil{
+//                    if let temp = self.prefs.object(forKey: "email") as? String{
+//                        self.emailTF.text = temp
+//                    }
+//                    if let temp = self.prefs.object(forKey: "password") as? String{
+//                        self.passwordTF.text = temp
+//                    }
+//                    if let temp = self.prefs.object(forKey: "switch") as? Bool{
+//                        self.rememberMeSwitch.isOn = temp
+//                    }
+//                   
+//                }
+//            }
+//             self.performSegue(withIdentifier: "segueRooms", sender: self)
+//        })
         // Do any additional setup after loading the view.
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setAuthListener() {
+        if authHandle != nil{
+            return
+        }
+        authHandle = FIRAuth.auth()?.addStateDidChangeListener({auth, user in
+            
+                if user == nil {
+                    print(auth)
+                    return
+                } else {
+                    if self.prefs.object(forKey: "switch") as? Bool == true{
+                        if user != nil{
+                            if let temp = self.prefs.object(forKey: "email") as? String{
+                                self.emailTF.text = temp
+                            }
+                            if let temp = self.prefs.object(forKey: "password") as? String{
+                                self.passwordTF.text = temp
+                            }
+                            if let temp = self.prefs.object(forKey: "switch") as? Bool{
+                                self.rememberMeSwitch.isOn = temp
+                            }
+                            
+                        }
+                    }
+//                    DBService.shared.initUser()
+//                    if let deviceTokenString = UserDefaults.standard.object(forKey: "deviceToken") as? String{
+//                        print(deviceTokenString)
+//                        //use email
+//                        let formattedEmail = Formatter.formateEmail(email: (u?.email)!)
+//                        self.ref.child("token").updateChildValues([formattedEmail:deviceTokenString])
+//                        self.ref.child("emails").updateChildValues([formattedEmail:user!.uid])
+//                    }
+                    //called only for login
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc =   storyboard.instantiateViewController(withIdentifier: "roomsVC") as! RoomsViewController
+                    self.present(vc, animated: true, completion: nil)
+                }
+            
+        }) as? UInt
     }
     
     func dismissKeyboard(){
@@ -140,11 +190,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.present(alert, animated: true, completion: nil)
         }else{
             
-            prefs.set(emailTF.text, forKey: "email")
-            prefs.set(passwordTF.text, forKey:"password")
-            prefs.set(rememberMeSwitch.isOn, forKey:"switch")
+            
             FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:{(success) in
-                
+                self.prefs.set(self.emailTF.text, forKey: "email")
+            self.prefs.set(self.passwordTF.text, forKey:"password")
+            self.prefs.set(self.rememberMeSwitch.isOn, forKey:"switch")
+                self.setAuthListener()
             })
         }
         
