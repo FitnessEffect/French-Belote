@@ -404,7 +404,7 @@
 				INFOPLIST_FILE = "French Belote/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.auvergne.stefan.French-Belote";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail.French-Belote";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -423,7 +423,7 @@
 				INFOPLIST_FILE = "French Belote/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.auvergne.stefan.French-Belote";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail.French-Belote";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;

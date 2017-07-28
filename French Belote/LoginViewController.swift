@@ -50,27 +50,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         else {
             rememberMeSwitch.setOn(false, animated: true)
         }
-//        FIRAuth.auth()?.addStateDidChangeListener({auth, user in
-            //check if remember me is true
-//            if self.prefs.object(forKey: "switch") as? Bool == true{
-//                if user != nil{
-//                    if let temp = self.prefs.object(forKey: "email") as? String{
-//                        self.emailTF.text = temp
-//                    }
-//                    if let temp = self.prefs.object(forKey: "password") as? String{
-//                        self.passwordTF.text = temp
-//                    }
-//                    if let temp = self.prefs.object(forKey: "switch") as? Bool{
-//                        self.rememberMeSwitch.isOn = temp
-//                    }
-//                   
-//                }
-//            }
-//             self.performSegue(withIdentifier: "segueRooms", sender: self)
-//        })
-        // Do any additional setup after loading the view.
     }
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -82,7 +62,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         authHandle = FIRAuth.auth()?.addStateDidChangeListener({auth, user in
-            
                 if user == nil {
                     print(auth)
                     return
@@ -98,17 +77,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             if let temp = self.prefs.object(forKey: "switch") as? Bool{
                                 self.rememberMeSwitch.isOn = temp
                             }
-                            
                         }
                     }
-//                    DBService.shared.initUser()
-//                    if let deviceTokenString = UserDefaults.standard.object(forKey: "deviceToken") as? String{
-//                        print(deviceTokenString)
-//                        //use email
-//                        let formattedEmail = Formatter.formateEmail(email: (u?.email)!)
-//                        self.ref.child("token").updateChildValues([formattedEmail:deviceTokenString])
-//                        self.ref.child("emails").updateChildValues([formattedEmail:user!.uid])
-//                    }
                     //called only for login
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let vc =   storyboard.instantiateViewController(withIdentifier: "roomsVC") as! RoomsViewController
@@ -189,8 +159,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }else{
-            
-            
             FIRAuth.auth()?.signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion:{(success) in
                 self.prefs.set(self.emailTF.text, forKey: "email")
             self.prefs.set(self.passwordTF.text, forKey:"password")
@@ -202,7 +170,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func register(_ sender: UIButton) {
-        
         if emailTF.text == "" {
             let alertController = UIAlertController(title: "Invalid Email", message: "Please enter an email", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -216,8 +183,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
-            
-
         }else{
             
             FIRAuth.auth()?.createUser(withEmail: emailTF.text!, password: passwordTF.text!) { (user, error) in
